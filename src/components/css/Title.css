@@ -1,0 +1,50 @@
+.Title {
+    background: lightgrey;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 0 0.5em;
+}
+
+.Title-name {
+    border-right: 3px solid grey;
+    padding: 0 0.5em;
+    font-size: 1.5em;
+    font-family: bold;
+    text-align: center;
+    line-height: 50px;
+}
+
+.Title-middle {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    padding: 0.5em;
+}
+
+.Title-search-text{
+    margin: 0 0.5em;
+}
+
+.Title-search-box {
+    padding: 0.25em;
+}
+
+.Title-search-button {
+    flex: 0;
+    margin: 0 0.5em;
+}
+
+.Title-selected-course {
+    width: 15em;
+}
+
+.Title-about-button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

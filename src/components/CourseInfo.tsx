@@ -1,5 +1,6 @@
 import * as React from "react";
 import { Course } from "./Course";
+import { LoadCourseHTML } from "./Network";
 
 import "./css/CourseInfo.css";
 
@@ -7,8 +8,8 @@ export interface CourseInfoProps {
     course?: Course;
 }
 
+const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
 
-const serverUrl = "http://amandeep-laptop/Data/";
 class CourseInfo extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
 
@@ -20,26 +21,31 @@ class CourseInfo extends React.PureComponent<CourseInfoProps> {
 
     loadCourse = async () => {
         const { course } = this.props;
-        if (!course) {
-          return;
-        }
-    
-        const { fieldOfStudy, courseNum } = course;
 
-        const html = await fetch(serverUrl + fieldOfStudy + "/" + fieldOfStudy + courseNum + ".html");
-        if (this._iframe ) {
-            this._iframe.contentDocument.body.innerHTML = await html.text();
+        if (!this._iframe) {
+            return;
+        }
+
+        if (course) {
+            this._iframe.contentDocument.body.innerHTML = await LoadCourseHTML(course);
+        } else {
+            this._iframe.contentDocument.body.innerHTML = startHTML;
         }
     }
 
     render() {
-        const { course } = this.props;
-        if (course) {
-            return <iframe ref={ref => this._iframe = ref} src={"./info.html"} className="CourseInfo-iframe" onLoad={this.loadCourse} />;
-        } else {
-            return <div> No Course Selected </div>;
-        }
+        return (
+            <div className="CourseInfo-iframe-wrapper">
+                <iframe
+                    ref={ref => this._iframe = ref}
+                    src={"./info.html"}
+                    className="CourseInfo-iframe"
+                    onLoad={this.loadCourse}
+                />
+            </div>
+        );
     }
+
 }
 
 export default CourseInfo;

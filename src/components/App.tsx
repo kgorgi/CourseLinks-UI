@@ -1,9 +1,29 @@
 import * as React from "react";
-import * as SplitPane from "react-split-pane";
-import CourseInfo from "./CourseInfo";
+
+import Title from "./Title";
 import GraphContainer from "./GraphContainer";
+import CourseInfo from "./CourseInfo";
+
+import { MuiThemeProvider } from "material-ui/styles/";
+import { createMuiTheme } from "material-ui/styles/";
+import purple from "material-ui/colors/purple";
+import green from "material-ui/colors/green";
+import red from "material-ui/colors/red";
+
 import { Course } from "./Course";
+
 import "./css/App.css";
+
+const theme = createMuiTheme({
+  palette: {
+    primary: purple, // Purple and green play nicely together.
+    secondary: {
+      ...green,
+      A400: "#00e677",
+    },
+    error: red,
+  },
+});
 
 interface AppState {
   searchedCourse?: Course;
@@ -18,15 +38,10 @@ class App extends React.Component<{}, AppState> {
     infoCourse: "",
   };
 
-  handleSearchInput = (event: React.ChangeEvent<HTMLInputElement>) => {
-    this.setState({ courseToSearch: event.target.value });
-  }
-
-  handleSearchSubmit = () => {
-    const { courseToSearch } = this.state;
-    const courseSpilt = courseToSearch.split(" ");
+  handleSearchSubmit = (strCourse: string) => {
+    const courseSpilt = strCourse.split(" ");
     const newCourse: Course = {
-      name: courseToSearch,
+      name: strCourse,
       fieldOfStudy: courseSpilt[0],
       courseNum: courseSpilt[1]
     };
@@ -34,21 +49,19 @@ class App extends React.Component<{}, AppState> {
   }
 
   render() {
-    const { courseToSearch, searchedCourse } = this.state;
-
+    const { searchedCourse } = this.state;
     return (
-      <div className="App">
-        <SplitPane split="vertical" defaultSize={600} primary="second" allowResize={false} >
-          <div>
-            <input type="text" value={courseToSearch} onChange={this.handleSearchInput} />
-            <button type="button" onClick={this.handleSearchSubmit} > Search </button>
-            <span> Current Course: {searchedCourse ? searchedCourse.name : ""} </span>
-            <br />
-            <GraphContainer course={searchedCourse}/>
+      <MuiThemeProvider theme={theme}>
+        <div className="App">
+          <div className="App-graph">
+            <Title onSearch={this.handleSearchSubmit} selectedCourse={searchedCourse}/>
+            <GraphContainer course={searchedCourse} />
           </div>
-          <CourseInfo course={searchedCourse} />
-        </SplitPane>
-      </div>
+          <div className="App-info-pane ">
+            <CourseInfo course={searchedCourse} />
+          </div>
+        </div>
+      </MuiThemeProvider>
     );
   }
 }

@@ -1,10 +1,9 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
 import { Course, CourseLink } from "./Course";
+import { LoadCourseJSON } from "./Network";
 
 import "./css/GraphContainer.css";
-
-const serverUrl = "http://amandeep-laptop/Data/";
 
 const options = {
   layout: {
@@ -35,24 +34,23 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
       return;
     }
 
-    const { fieldOfStudy, courseNum } = course;
-
     if (prevProps.course !== this.props.course) {
-      const response = await fetch(serverUrl + fieldOfStudy + "/" + fieldOfStudy + courseNum + ".json");
-      const relations = await JSON.parse(await response.text());
-      const graph = createGraph(relations.RelationsList);
+      const response = await LoadCourseJSON(course);
+      const graph = createGraph(response.RelationsList);
       this.setState({ graph });
     }
   }
   render() {
-    if(this.state.graph){
+    if (this.state.graph) {
       return (
-        <Graph graph={this.state.graph} options={options} events={{}} style={{ height: "800px" }} />
+        <div className="GraphContainer">
+          <Graph graph={this.state.graph} options={options} events={{}} style={{ height: "100%" }} />
+        </div>
       );
     }
 
     return null;
-    
+
   }
 }
 
@@ -65,7 +63,6 @@ function createGraph(links: CourseLink[]) {
   const edges = [];
 
   for (const link of links) {
-    console.log(link);
     if (!idMap.has(link.Source)) {
       idMap.set(link.Source, currId);
       currId += 1;
