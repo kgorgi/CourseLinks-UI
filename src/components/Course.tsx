@@ -21,5 +21,14 @@ export interface CourseLink {
     Source: string;
     Destination: string;
     Type: string;
+}
+
+export interface GraphInfo {
+    RelationsList: CourseLink[];
+    CourseLevelsInfo: Node[];
+}
+
+export interface Node {
+    CourseId: string;
     Level: number;
 }

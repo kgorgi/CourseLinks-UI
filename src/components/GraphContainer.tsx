@@ -1,6 +1,6 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
-import { CourseLink } from "./Course";
+import { GraphInfo } from "./Course";
 import Legend from "./Legend";
 
 import "./css/GraphContainer.css";
@@ -33,7 +33,7 @@ const options = {
 };
 
 export interface GraphContainerProps {
-  graphInfo?: any;
+  graphInfo?: GraphInfo;
   onCourseSelect: (name: string) => void;
 }
 
@@ -49,15 +49,13 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
 
   private nameLookup: Map<number, string> = new Map<number, string>();
 
-  createGraph = (links: CourseLink[]) => {
+  createGraph = (graphInfo: GraphInfo) => {
     const idMap: Map<string, number> = new Map<string, number>();
-    const levelMap: Map<string, number> = new Map<string, number>();
-
     let currId = 0;
 
     const edges = [];
 
-    for (const link of links) {
+    for (const link of graphInfo.RelationsList) {
       if (!idMap.has(link.Source)) {
         idMap.set(link.Source, currId);
         this.nameLookup.set(currId, link.Source);
@@ -68,18 +66,6 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
         idMap.set(link.Destination, currId);
         this.nameLookup.set(currId, link.Destination);
         currId += 1;
-      }
-
-      const mapValue = levelMap.get(link.Destination);
-      if (mapValue) {
-        if (link.Level > mapValue) {
-          levelMap.set(link.Destination, link.Level);
-        }
-      } else {
-        levelMap.set(link.Destination, link.Level);
-        if (link.Level === 1) {
-          levelMap.set(link.Source, 0);
-        }
       }
 
       let color: any = "blue";
@@ -104,19 +90,19 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
     }
 
     const nodes = [];
-    const courseKeys = Array.from(idMap.keys());
-
-    for (const course of courseKeys) {
-      const id = idMap.get(course);
-      nodes.push({
-        id,
-        label: course,
-        color: {
-          color: "blue",
-          highlight: "orange"
-        },
-        level: levelMap.get(course)
-      });
+    for (const course of graphInfo.CourseLevelsInfo) {
+      const id = idMap.get(course.CourseId);
+      if (id) {
+        nodes.push({
+          id,
+          label: course.CourseId,
+          color: {
+            color: "blue",
+            highlight: "orange"
+          },
+          level: course.Level
+        });
+      }
     }
 
     return { nodes, edges };
@@ -129,7 +115,7 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
     }
 
     if (prevProps.graphInfo !== this.props.graphInfo) {
-      const graph = this.createGraph(graphInfo.RelationsList);
+      const graph = this.createGraph(graphInfo);
       this.setState({ graph });
     }
   }

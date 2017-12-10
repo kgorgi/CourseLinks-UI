@@ -1,7 +1,9 @@
 import * as React from "react";
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
-import { Course } from "./Course";
+import Select from "material-ui/Select";
+import { MenuItem } from "material-ui/Menu";
+import { Course, GraphInfo } from "./Course";
 import { LoadCourseJSON } from "./Network";
 
 import Dialog, {
@@ -15,7 +17,7 @@ import Slide from "material-ui/transitions/Slide";
 import "./css/Title.css";
 
 export interface TitleProps {
-    onSearch: (infoCourse: Course | undefined, graphInfo: any | undefined) => void;
+    onSearch: (infoCourse: Course | undefined, graphInfo: GraphInfo | undefined) => void;
 }
 
 const courseRegex = /^ *([A-Z|a-z]{2,4}) *(\d{3}) *$/;
@@ -25,6 +27,7 @@ interface TitleState {
     error: boolean;
     selectedCourse: string;
     aboutOpen: boolean;
+    calender: string;
 }
 
 class Title extends React.Component<TitleProps, TitleState> {
@@ -32,7 +35,8 @@ class Title extends React.Component<TitleProps, TitleState> {
         searchText: "",
         error: false,
         selectedCourse: "",
-        aboutOpen: true
+        aboutOpen: true,
+        calender: "Jan18",
     };
 
     handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +68,11 @@ class Title extends React.Component<TitleProps, TitleState> {
 
     }
 
+    handleCalenderSelect = (event: any) => {
+        const calender = event.target.value;
+        this.setState({ calender });
+    }
+
     handleAboutOpen = () => {
         this.setState({ aboutOpen: true });
     }
@@ -83,7 +92,7 @@ class Title extends React.Component<TitleProps, TitleState> {
                 <DialogTitle>{"Welcome to Course Links!"}</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Course Links is a website that shows you the different kind of links between UVic Courses. 
+                        Course Links is a website that shows you the different kind of links between UVic Courses.
                          <br /> <br />
                         Created by Kian Gorgichuk and Amandeep Singh
                     </DialogContentText>
@@ -97,12 +106,28 @@ class Title extends React.Component<TitleProps, TitleState> {
     }
 
     render() {
-        const { error, selectedCourse } = this.state;
+        const { error, selectedCourse, calender } = this.state;
         return (
             <div className="Title" style={{}}>
-                <div className="Title-name"> Course Links: {selectedCourse}  </div>
+                <div className="Title-name"> Course Links{selectedCourse && ": " + selectedCourse}</div>
+
+                <div className="Title-calender">
+                    <h4 className="Title-text"> Calender: </h4>
+                    <Select 
+                        value={calender} 
+                        onChange={this.handleCalenderSelect} 
+                        className="Title-search-box" 
+                        fullWidth={true} 
+                    >
+                        <MenuItem value="Jan18">Janurary 2018</MenuItem>
+                        <MenuItem value="Sept17">September 2017</MenuItem>
+                    </Select>
+                </div>
+
                 <div className="Title-middle">
-                    <h4 className="Title-search-text"> Enter a Course: </h4>
+
+
+                    <h4 className="Title-text"> Enter a Course: </h4>
                     <form className="Title-search-box" onSubmit={this.handleSearch}>
                         <TextField
                             value={this.state.searchText}
