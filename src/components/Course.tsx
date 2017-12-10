@@ -32,3 +32,15 @@ export interface Node {
     CourseId: string;
     Level: number;
 }
+
+export class DependencyTypes {
+    public preReq: boolean;
+    public coReq: boolean;
+    public precoReq: boolean;
+
+    constructor(preReq: boolean, coReq: boolean, precoReq: boolean) {
+        this.preReq = preReq;
+        this.coReq = coReq;
+        this.precoReq = precoReq;
+    }
+}

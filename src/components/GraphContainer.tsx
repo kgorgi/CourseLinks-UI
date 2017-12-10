@@ -1,9 +1,11 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
-import { GraphInfo } from "./Course";
-import Legend from "./Legend";
+import { GraphInfo, DependencyTypes } from "./Course";
+import GraphBar from "./GraphBar";
 
 import "./css/GraphContainer.css";
+
+
 
 const options = {
   layout: {
@@ -40,6 +42,7 @@ export interface GraphContainerProps {
 interface GraphContainerState {
   graph?: any;
   events: any;
+  validTypes?: DependencyTypes;
 }
 
 class GraphContainer extends React.PureComponent<GraphContainerProps, GraphContainerState> {
@@ -54,6 +57,8 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
     let currId = 0;
 
     const edges = [];
+
+    const validTypes = new DependencyTypes(false, false, false);
 
     for (const link of graphInfo.RelationsList) {
       if (!idMap.has(link.Source)) {
@@ -73,9 +78,13 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
       if (link.Type === "coreq") {
         color = "red";
         title = "Corequisite";
+        validTypes.coReq = true;
       } else if (link.Type === "precoreq") {
         color = "green";
         title = "Pre or corequisite";
+        validTypes.precoReq = true;
+      } else {
+        validTypes.preReq = true;
       }
 
       edges.push({
@@ -88,6 +97,8 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
         title,
       });
     }
+
+    this.setState({ validTypes });
 
     const nodes = [];
     for (const course of graphInfo.CourseLevelsInfo) {
@@ -142,10 +153,10 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
   }
 
   render() {
-    const { graph, events } = this.state;
+    const { graph, events, validTypes } = this.state;
     return (
       <div className="GraphContainer">
-        <Legend />
+        <GraphBar validTypes={validTypes} />
         {graph && <Graph graph={this.state.graph} options={options} events={events} style={{ height: "85vh" }} />}
       </div>
     );
