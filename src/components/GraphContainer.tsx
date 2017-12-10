@@ -5,8 +5,6 @@ import GraphBar from "./GraphBar";
 
 import "./css/GraphContainer.css";
 
-
-
 const options = {
   layout: {
     improvedLayout: false,
@@ -96,6 +94,7 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
         },
         title,
       });
+
     }
 
     this.setState({ validTypes });

@@ -8,37 +8,62 @@ export interface GraphBarProps {
     validTypes?: DependencyTypes;
 }
 
-class GraphBar extends React.Component<GraphBarProps> {
+export interface GraphBarState {
+}
+
+class GraphBar extends React.Component<GraphBarProps, GraphBarState> {
+
     renderLegend = () => {
-        const elements: JSX.Element[] = [];
         const { validTypes } = this.props;
-        if (validTypes) {
-            if (validTypes.preReq) {
-                elements.push(
-                    <div key="preReq" className="GraphBar-legend-item">
-                        <Checkbox />
-                        <h4 className="Legend-text"> Pre-requisite: </h4>
-                    </div>
-                );
-            }
 
-            if (validTypes.coReq) {
-                elements.push(
-                    <div key="coReq" className="GraphBar-legend-item">
-                        <Checkbox />
-                        <h4 className="Legend-text"> Co-requisite: </h4>
-                    </div>
-                );
-            }
+        if (!validTypes ) {
+            return null;
+        }
 
-            if (validTypes.precoReq) {
-                elements.push(
-                    <div key="precoReq" className="GraphBar-legend-item">
-                        <Checkbox />
-                        <h4 className="Legend-text"> Pre/Co-requisite: </h4>
-                    </div>
-                );
-            }
+        const { preReq, coReq, precoReq } = validTypes;
+
+        let validCount = 0;
+        if (preReq) {
+            validCount += 1;
+        }
+
+        if (coReq) {
+            validCount += 1;
+        }
+
+        if (precoReq) {
+            validCount += 1;
+        }
+
+        const renderCheckbox = validCount !== 1;
+
+        const elements: JSX.Element[] = [];
+
+        if (preReq) {
+            elements.push(
+                <div key="preReq" className="GraphBar-legend-item">
+                    {renderCheckbox && <Checkbox />}
+                    < h4 className="Legend-text"> Pre-requisite: </h4>
+                </div>
+            );
+        }
+
+        if (coReq) {
+            elements.push(
+                <div key="coReq" className="GraphBar-legend-item">
+                    {renderCheckbox && <Checkbox />}
+                    <h4 className="Legend-text"> Co-requisite: </h4>
+                </div>
+            );
+        }
+
+        if (precoReq) {
+            elements.push(
+                <div key="precoReq" className="GraphBar-legend-item">
+                    {renderCheckbox && <Checkbox />}
+                    <h4 className="Legend-text"> Pre/Co-requisite: </h4>
+                </div>
+            );
         }
 
         return elements;

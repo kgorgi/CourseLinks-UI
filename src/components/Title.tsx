@@ -113,11 +113,11 @@ class Title extends React.Component<TitleProps, TitleState> {
 
                 <div className="Title-calender">
                     <h4 className="Title-text"> Calender: </h4>
-                    <Select 
-                        value={calender} 
-                        onChange={this.handleCalenderSelect} 
-                        className="Title-search-box" 
-                        fullWidth={true} 
+                    <Select
+                        value={calender}
+                        onChange={this.handleCalenderSelect}
+                        className="Title-search-box"
+                        fullWidth={true}
                     >
                         <MenuItem value="Jan18">Janurary 2018</MenuItem>
                         <MenuItem value="Sept17">September 2017</MenuItem>
@@ -125,7 +125,6 @@ class Title extends React.Component<TitleProps, TitleState> {
                 </div>
 
                 <div className="Title-middle">
-
 
                     <h4 className="Title-text"> Enter a Course: </h4>
                     <form className="Title-search-box" onSubmit={this.handleSearch}>
