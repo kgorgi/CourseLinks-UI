@@ -6,6 +6,7 @@ import CourseInfo from "./CourseInfo";
 
 import { MuiThemeProvider } from "material-ui/styles";
 import { createMuiTheme } from "material-ui/styles";
+
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
@@ -26,7 +27,8 @@ interface AppState {
 }
 
 class App extends React.Component<{}, AppState> {
-  state: AppState = {};
+  state: AppState = {
+  };
 
   handleSearchSubmit = (infoCourse: Course| undefined, graphInfo: any | undefined) => {
     this.setState({ graphInfo, infoCourse });

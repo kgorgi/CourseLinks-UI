@@ -4,6 +4,14 @@ import TextField from "material-ui/TextField";
 import { Course } from "./Course";
 import { LoadCourseJSON } from "./Network";
 
+import Dialog, {
+    DialogActions,
+    DialogContent,
+    DialogContentText,
+    DialogTitle,
+} from "material-ui/Dialog";
+import Slide from "material-ui/transitions/Slide";
+
 import "./css/Title.css";
 
 export interface TitleProps {
@@ -16,13 +24,15 @@ interface TitleState {
     searchText: string;
     error: boolean;
     selectedCourse: string;
+    aboutOpen: boolean;
 }
 
 class Title extends React.Component<TitleProps, TitleState> {
     state: TitleState = {
         searchText: "",
         error: false,
-        selectedCourse: ""
+        selectedCourse: "",
+        aboutOpen: true
     };
 
     handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -38,7 +48,7 @@ class Title extends React.Component<TitleProps, TitleState> {
         const { searchText } = this.state;
         const matches = courseRegex.exec(searchText);
         if (matches && matches[1] && matches[2]) {
-            const courseId =  matches[1].toLocaleUpperCase() + " " + matches[2];
+            const courseId = matches[1].toLocaleUpperCase() + " " + matches[2];
             const course = new Course(courseId);
             try {
                 const infoPackage = await LoadCourseJSON(course);
@@ -52,6 +62,38 @@ class Title extends React.Component<TitleProps, TitleState> {
             this.setState({ error: true });
         }
 
+    }
+
+    handleAboutOpen = () => {
+        this.setState({ aboutOpen: true });
+    }
+
+    handleAboutClose = () => {
+        this.setState({ aboutOpen: false });
+    }
+
+    createDialog = () => {
+        return (
+            <Dialog
+                open={this.state.aboutOpen}
+                transition={Transition}
+                keepMounted={true}
+                onRequestClose={this.handleAboutClose}
+            >
+                <DialogTitle>{"Welcome to Course Links!"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Course Links is a website that shows you the different kind of links between UVic Courses. 
+                         <br /> <br />
+                        Created by Kian Gorgichuk and Amandeep Singh
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleAboutClose} color="primary">
+                        Okay
+                    </Button>
+                </DialogActions>
+            </ Dialog>);
     }
 
     render() {
@@ -82,12 +124,18 @@ class Title extends React.Component<TitleProps, TitleState> {
                     raised={true}
                     color="primary"
                     className="Title-about-button"
+                    onClick={this.handleAboutOpen}
                 >
                     About
                 </Button>
+                {this.createDialog()}
             </div >
         );
     }
 }
 
 export default Title;
+
+function Transition(props: any) {
+    return <Slide direction="up" {...props} />;
+}

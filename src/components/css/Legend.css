@@ -1,0 +1,12 @@
+.Legend {
+    background: #d3d3d3a1;
+    border-bottom: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    padding: 0 0.5em;
+    height: 5.5vh;
+}
+
+

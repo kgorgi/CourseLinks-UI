@@ -1,7 +1,7 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
 import { CourseLink } from "./Course";
-import blue from "material-ui/colors/blue";
+import Legend from "./Legend";
 
 import "./css/GraphContainer.css";
 
@@ -82,7 +82,7 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
         }
       }
 
-      let color = "blue";
+      let color: any = "blue";
       let title = "Prerequisite";
       if (link.Type === "coreq") {
         color = "red";
@@ -111,7 +111,10 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
       nodes.push({
         id,
         label: course,
-        color: blue,
+        color: {
+          color: "blue",
+          highlight: "orange"
+        },
         level: levelMap.get(course)
       });
     }
@@ -154,15 +157,12 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
 
   render() {
     const { graph, events } = this.state;
-    if (graph) {
-      return (
-        <div className="GraphContainer">
-          <Graph graph={this.state.graph} options={options} events={events} style={{ height: "94vh" }} />
-        </div>
-      );
-    }
-
-    return null;
+    return (
+      <div className="GraphContainer">
+        <Legend />
+        {graph && <Graph graph={this.state.graph} options={options} events={events} style={{ height: "85vh" }} />}
+      </div>
+    );
   }
 }
 
