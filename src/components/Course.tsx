@@ -1,3 +1,16 @@
+export class Course {
+    public name: string;
+    public fieldOfStudy: string;
+    public courseNum: string;
+
+    constructor(name: string) {
+        const courseSpilt = name.split(" ");
+        this.name = name;
+        this.fieldOfStudy = courseSpilt[0];
+        this.courseNum = courseSpilt[1];
+    }
+}
+
 export interface Course {
     name: string;
     fieldOfStudy: string;
@@ -7,5 +20,6 @@ export interface Course {
 export interface CourseLink {
     Source: string;
     Destination: string;
-    Types: string;
+    Type: string;
+    Level: number;
 }

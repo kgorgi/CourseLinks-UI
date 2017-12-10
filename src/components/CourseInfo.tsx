@@ -9,6 +9,7 @@ export interface CourseInfoProps {
 }
 
 const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
+const errorHTML = "<h1 class=\"subject-and-number\">Error Cannot Load Course</h1>";
 
 class CourseInfo extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
@@ -27,7 +28,12 @@ class CourseInfo extends React.PureComponent<CourseInfoProps> {
         }
 
         if (course) {
-            this._iframe.contentDocument.body.innerHTML = await LoadCourseHTML(course);
+            try {
+                this._iframe.contentDocument.body.innerHTML = await LoadCourseHTML(course);
+            } catch {
+                this._iframe.contentDocument.body.innerHTML = errorHTML;
+            }
+           
         } else {
             this._iframe.contentDocument.body.innerHTML = startHTML;
         }

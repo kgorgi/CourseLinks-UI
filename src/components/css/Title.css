@@ -1,11 +1,12 @@
 .Title {
-    background: lightgrey;
+    background: #d3d3d3;
     border-bottom: 1px solid black;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-content: center;
     padding: 0 0.5em;
+    height: 5.5vh;
 }
 
 .Title-name {
@@ -13,8 +14,9 @@
     padding: 0 0.5em;
     font-size: 1.5em;
     font-family: bold;
-    text-align: center;
+    text-align: left;
     line-height: 50px;
+    width: 11em;
 }
 
 .Title-middle {
@@ -31,7 +33,7 @@
 }
 
 .Title-search-box {
-    padding: 0.25em;
+    background: white; 
 }
 
 .Title-search-button {
@@ -39,12 +41,14 @@
     margin: 0 0.5em;
 }
 
-.Title-selected-course {
-    width: 15em;
+.Title-error {
+    width: 10em;
 }
 
 .Title-about-button {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin: 0.5em;
+    padding: 0.5em;
 }
