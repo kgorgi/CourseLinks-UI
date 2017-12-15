@@ -18,9 +18,33 @@
     padding: 0.5em;
 }
 
-.GraphBar-legend-item{
+.GraphBar-legend-item {
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 0.5em;
+}
+
+.GraphBar-arrow-green,
+.GraphBar-arrow-blue, 
+.GraphBar-arrow-red,
+.GraphBar-arrow-orange {
+    font-weight: 900;
+    font-size: 50px;
+}
+
+.GraphBar-arrow-green {
+    color: green;
+}
+
+.GraphBar-arrow-red {
+    color: red;
+}
+
+.GraphBar-arrow-blue {
+    color: blue;
+}
+
+.GraphBar-arrow-orange{
+    color: orange;
 }

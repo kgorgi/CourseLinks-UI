@@ -29,32 +29,108 @@ const options = {
   },
   physics: {
     enabled: false
-  }
+  },
 };
 
 export interface GraphContainerProps {
   graphInfo?: GraphInfo;
   onCourseSelect: (name: string) => void;
+  currentCourse?: string;
 }
 
 interface GraphContainerState {
   graph?: any;
   events: any;
   validTypes?: DependencyTypes;
+  displayedTypes?: DependencyTypes;
+  allEdges?: any[];
 }
 
-class GraphContainer extends React.PureComponent<GraphContainerProps, GraphContainerState> {
+class GraphContainer extends React.Component<GraphContainerProps, GraphContainerState> {
   state: GraphContainerState = {
     events: {}
   };
 
   private nameLookup: Map<number, string> = new Map<number, string>();
+  private idLookup: Map<string, number> = new Map<string, number>();
+
+  handleDisplayPreReqs = () => {
+    const { displayedTypes } = this.state;
+
+    if (displayedTypes) {
+      const { preReq, coReq, precoReq } = displayedTypes;
+      const newValues = new DependencyTypes(!preReq, coReq, precoReq);
+      this.setState({ displayedTypes: newValues });
+    }
+  }
+
+  handleDisplayCoReqs = () => {
+    const { displayedTypes } = this.state;
+
+    if (displayedTypes) {
+      const { preReq, coReq, precoReq } = displayedTypes;
+      const newValues = new DependencyTypes(preReq, !coReq, precoReq);
+      this.setState({ displayedTypes: newValues });
+    }
+  }
+
+  handleDisplayPreCoReqs = () => {
+    const { displayedTypes } = this.state;
+
+    if (displayedTypes) {
+      const { preReq, coReq, precoReq } = displayedTypes;
+      const newValues = new DependencyTypes(preReq, coReq, !precoReq);
+      this.setState({ displayedTypes: newValues });
+    }
+  }
+
+  updateEdges = () => {
+    const { graphInfo } = this.props;
+    const { idLookup } = this;
+    const { displayedTypes, graph } = this.state;
+
+    if (!idLookup || !graphInfo || !displayedTypes) {
+      return;
+    }
+
+    const edges = [];
+    const multipleTypes = displayedTypes.getCount() !== 1;
+    for (const link of graphInfo.RelationsList) {
+
+      let color = "blue";
+
+      if (link.Type === "coreq") {
+        color = "red";
+      } else if (link.Type === "precoreq") {
+        color = "green";
+      }
+
+      const hidden = !((link.Type === "prereq" && displayedTypes.preReq) ||
+        (link.Type === "coreq" && displayedTypes.coReq) ||
+        (link.Type === "precoreq" && displayedTypes.precoReq));
+
+      edges.push({
+        to: idLookup.get(link.Source),
+        from: idLookup.get(link.Destination),
+        color: {
+          color,
+          highlight: multipleTypes ? color : "orange"
+        },
+        hidden
+
+      });
+
+    }
+
+    const { nodes } = graph;
+    return { nodes, edges };
+  }
 
   createGraph = (graphInfo: GraphInfo) => {
     const idMap: Map<string, number> = new Map<string, number>();
     let currId = 0;
 
-    const edges = [];
+    let edges = [];
 
     const validTypes = new DependencyTypes(false, false, false);
 
@@ -71,8 +147,9 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
         currId += 1;
       }
 
-      let color: any = "blue";
+      let color = "blue";
       let title = "Prerequisite";
+
       if (link.Type === "coreq") {
         color = "red";
         title = "Corequisite";
@@ -97,20 +174,40 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
 
     }
 
-    this.setState({ validTypes });
+    this.idLookup = idMap;
+
+    const { preReq, coReq, precoReq } = validTypes;
+    const displayedTypes = new DependencyTypes(preReq, coReq, precoReq);
+    this.setState({ validTypes, displayedTypes });
+
+    // If only one type, overwrite the highlight color
+    if (validTypes.getCount() === 1) {
+      edges = edges.map(value => {
+        value.color.highlight = "orange";
+        return value;
+      });
+    }
 
     const nodes = [];
-    for (const course of graphInfo.CourseLevelsInfo) {
-      const id = idMap.get(course.CourseId);
-      if (id) {
+    const courseKeys = Array.from(idMap.keys());
+    for (const key of courseKeys) {
+      const id = idMap.get(key);
+      let level = 0;
+      for (const course of graphInfo.CourseLevelsInfo) {
+        if (course.CourseId === key && graphInfo.course.name !== key) {
+          level = course.Level;
+        }
+      }
+
+      if (typeof id === "number") {
         nodes.push({
           id,
-          label: course.CourseId,
+          label: key,
           color: {
             color: "blue",
             highlight: "orange"
           },
-          level: course.Level
+          level
         });
       }
     }
@@ -118,7 +215,7 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
     return { nodes, edges };
   }
 
-  async componentDidUpdate(prevProps: GraphContainerProps) {
+  async componentDidUpdate(prevProps: GraphContainerProps, prevState: GraphContainerState) {
     const { graphInfo } = this.props;
     if (!graphInfo) {
       return;
@@ -126,6 +223,11 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
 
     if (prevProps.graphInfo !== this.props.graphInfo) {
       const graph = this.createGraph(graphInfo);
+      this.setState({ graph });
+    }
+
+    if (prevState.displayedTypes !== this.state.displayedTypes) {
+      const graph = this.updateEdges();
       this.setState({ graph });
     }
   }
@@ -152,13 +254,25 @@ class GraphContainer extends React.PureComponent<GraphContainerProps, GraphConta
   }
 
   render() {
-    const { graph, events, validTypes } = this.state;
-    return (
-      <div className="GraphContainer">
-        <GraphBar validTypes={validTypes} />
-        {graph && <Graph graph={this.state.graph} options={options} events={events} style={{ height: "85vh" }} />}
-      </div>
-    );
+    const { graph, events, validTypes, displayedTypes } = this.state;
+    const graphOptions: any = options;
+
+    if (graph) {
+      return (
+        <div className="GraphContainer">
+          <GraphBar
+            validTypes={validTypes}
+            displayTypes={displayedTypes}
+            onDisplayPreReqs={this.handleDisplayPreReqs}
+            onDisplayCoReqs={this.handleDisplayCoReqs}
+            onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
+          />
+          <Graph graph={this.state.graph} options={graphOptions} events={events} style={{ height: "85vh" }} />
+        </div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

@@ -6,62 +6,82 @@ import "./css/GraphBar.css";
 
 export interface GraphBarProps {
     validTypes?: DependencyTypes;
+    displayTypes?: DependencyTypes;
+    onDisplayPreReqs: () => void;
+    onDisplayCoReqs: () => void;
+    onDisplayPreCoReqs: () => void;
 }
 
-export interface GraphBarState {
-}
 
-class GraphBar extends React.Component<GraphBarProps, GraphBarState> {
+class GraphBar extends React.Component<GraphBarProps> {
 
     renderLegend = () => {
-        const { validTypes } = this.props;
+        const { validTypes, displayTypes } = this.props;
 
-        if (!validTypes ) {
+        if (!validTypes || !displayTypes) {
             return null;
         }
 
-        const { preReq, coReq, precoReq } = validTypes;
+        const { preReq, coReq, precoReq } = displayTypes;
+        const { onDisplayPreReqs, onDisplayCoReqs, onDisplayPreCoReqs } = this.props;
 
-        let validCount = 0;
-        if (preReq) {
-            validCount += 1;
-        }
-
-        if (coReq) {
-            validCount += 1;
-        }
-
-        if (precoReq) {
-            validCount += 1;
-        }
-
-        const renderCheckbox = validCount !== 1;
-
+        const renderCheckBox = validTypes.getCount() !== 1;
+        const disableLastCheckbox = displayTypes.getCount() === 1;
         const elements: JSX.Element[] = [];
 
-        if (preReq) {
+        if (validTypes.preReq) {
             elements.push(
                 <div key="preReq" className="GraphBar-legend-item">
-                    {renderCheckbox && <Checkbox />}
+                    {renderCheckBox &&
+                        <Checkbox
+                            checked={preReq}
+                            onClick={onDisplayPreReqs}
+                            disabled={disableLastCheckbox && preReq}
+                        />
+                    }
                     < h4 className="Legend-text"> Pre-requisite: </h4>
+                    <span className="GraphBar-arrow-blue"> ↗ </span>
                 </div>
             );
         }
 
-        if (coReq) {
+        if (validTypes.coReq) {
             elements.push(
                 <div key="coReq" className="GraphBar-legend-item">
-                    {renderCheckbox && <Checkbox />}
+                    {renderCheckBox &&
+                        <Checkbox
+                            checked={coReq}
+                            onClick={onDisplayCoReqs}
+                            disabled={disableLastCheckbox && coReq}
+                        />
+                    }
                     <h4 className="Legend-text"> Co-requisite: </h4>
+                    <span className="GraphBar-arrow-red"> ↗ </span>
                 </div>
             );
         }
 
-        if (precoReq) {
+        if (validTypes.precoReq) {
             elements.push(
                 <div key="precoReq" className="GraphBar-legend-item">
-                    {renderCheckbox && <Checkbox />}
+                     {renderCheckBox &&
+                        <Checkbox
+                            checked={precoReq}
+                            onClick={onDisplayPreCoReqs}
+                            disabled={disableLastCheckbox && precoReq}
+                        />
+                    }
                     <h4 className="Legend-text"> Pre/Co-requisite: </h4>
+                    <span className="GraphBar-arrow-green" > ↗ </span>
+                </div>
+            );
+        }
+
+        if (displayTypes.getCount() === 1) {
+            elements.push(
+                <div key="selected" className="GraphBar-legend-item">
+                    <h4 className="Legend-text"> Selected: </h4>
+                    <span className="GraphBar-arrow-orange" > ↗ </span>
                 </div>
             );
         }
@@ -70,7 +90,6 @@ class GraphBar extends React.Component<GraphBarProps, GraphBarState> {
     }
 
     render() {
-
         return (
             <div className="GraphBar" >
                 <div className="GraphBar-legend">

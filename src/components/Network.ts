@@ -18,5 +18,6 @@ export async function LoadCourseJSON(course: Course) {
     const { fieldOfStudy, courseNum } = course;
     const response = await fetch(serverUrl + fieldOfStudy + "/" + fieldOfStudy + courseNum + ".json");
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
+    coursePackage.course = course;
     return coursePackage;
 }

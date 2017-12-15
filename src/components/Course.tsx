@@ -26,6 +26,7 @@ export interface CourseLink {
 export interface GraphInfo {
     RelationsList: CourseLink[];
     CourseLevelsInfo: Node[];
+    course: Course;
 }
 
 export interface Node {
@@ -42,5 +43,22 @@ export class DependencyTypes {
         this.preReq = preReq;
         this.coReq = coReq;
         this.precoReq = precoReq;
+    }
+
+    getCount = () => {
+        let count = 0;
+        if (this.preReq) {
+            count += 1;
+        }
+        
+        if (this.coReq) {
+            count += 1;
+        }
+
+        if (this.precoReq) {
+            count += 1;
+        }
+
+        return count;
     }
 }

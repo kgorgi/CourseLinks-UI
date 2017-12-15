@@ -82,6 +82,7 @@ class Title extends React.Component<TitleProps, TitleState> {
     }
 
     createDialog = () => {
+        const { calender } = this.state;
         return (
             <Dialog
                 open={this.state.aboutOpen}
@@ -95,7 +96,19 @@ class Title extends React.Component<TitleProps, TitleState> {
                         Course Links is a website that shows you the different kind of links between UVic Courses.
                          <br /> <br />
                         Created by Kian Gorgichuk and Amandeep Singh
+                        <br /> <br />
+                        Select Calender:
                     </DialogContentText>
+                
+                    <Select
+                        value={calender}
+                        onChange={this.handleCalenderSelect}
+                        className="Title-search-box"
+                        fullWidth={true}
+                    >
+                        <MenuItem value="Jan18">Janurary 2018</MenuItem>
+                        <MenuItem value="Sept17">September 2017</MenuItem>
+                    </Select>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.handleAboutClose} color="primary">
@@ -106,23 +119,10 @@ class Title extends React.Component<TitleProps, TitleState> {
     }
 
     render() {
-        const { error, selectedCourse, calender } = this.state;
+        const { error, selectedCourse } = this.state;
         return (
             <div className="Title" style={{}}>
                 <div className="Title-name"> Course Links{selectedCourse && ": " + selectedCourse}</div>
-
-                <div className="Title-calender">
-                    <h4 className="Title-text"> Calender: </h4>
-                    <Select
-                        value={calender}
-                        onChange={this.handleCalenderSelect}
-                        className="Title-search-box"
-                        fullWidth={true}
-                    >
-                        <MenuItem value="Jan18">Janurary 2018</MenuItem>
-                        <MenuItem value="Sept17">September 2017</MenuItem>
-                    </Select>
-                </div>
 
                 <div className="Title-middle">
 
