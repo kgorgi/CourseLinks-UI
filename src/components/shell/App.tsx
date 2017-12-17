@@ -1,7 +1,7 @@
 import * as React from "react";
 
-import Title from "./Title";
-import GraphContainer from "./GraphContainer";
+import TitleBar from "./TitleBar";
+import GraphContainer from "./graph/GraphContainer";
 import CourseInfoPanel from "./CourseInfoPanel";
 
 import { MuiThemeProvider } from "material-ui/styles";
@@ -10,11 +10,11 @@ import { createMuiTheme } from "material-ui/styles";
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
-import { GraphInfo, Calendar } from "../utils/ServerTypes";
+import { GraphInfo, Calendar } from "../utils/types/ServerTypes";
 import Course, { CourseRegex } from "../utils/Course";
 import { LoadCourseJSON, LoadCoursesListJSON, LoadCalendarJSON } from "../utils/Network";
-import AboutModal from "../utils/AboutModal";
-import HelpModal from "../utils/HelpModal";
+import AboutModal from "../utils/modals/AboutModal";
+import HelpModal from "../utils/modals/HelpModal";
 
 import "./css/App.css";
 
@@ -50,7 +50,10 @@ interface AppState {
   /** The current list of calendars */
   calendarList?: Calendar[];
 
+  /** Controls if the about modal is open */
   aboutOpen: boolean;
+
+  /** Controls if the help modal is open */
   helpOpen: boolean;
 }
 
@@ -173,7 +176,7 @@ class App extends React.Component<{}, AppState> {
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <div className="App-graph">
-            <Title
+            <TitleBar
               onSearch={this.handleSearchSubmit}
               graphCourse={graphCourse}
               invalidCourse={invalidCourse}

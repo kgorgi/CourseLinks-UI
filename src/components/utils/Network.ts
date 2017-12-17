@@ -1,5 +1,5 @@
 
-import { GraphInfo, CourseList, Calendars } from "./ServerTypes";
+import { GraphInfo, CourseList, Calendars } from "./types/ServerTypes";
 import Course from "./Course";
 
 export async function LoadCourseHTML(course: Course, calendar: string) {

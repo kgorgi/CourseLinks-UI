@@ -3,25 +3,25 @@ import * as React from "react";
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 
-import  Course from "../utils/Course";
+import Course from "../utils/Course";
 
 import "./css/Title.css";
 
-export interface TitleProps {
+export interface TitleBarProps {
     onSearch: (courseStr: string) => any;
     graphCourse?: Course;
     invalidCourse: boolean;
     openAboutModal: () => void;
 }
 
-interface TitleState {
+interface TitleBarState {
     searchText: string;
     aboutOpen: boolean;
     calender: string;
 }
 
-class Title extends React.Component<TitleProps, TitleState> {
-    state: TitleState = {
+class Titlebar extends React.Component<TitleBarProps, TitleBarState> {
+    state: TitleBarState = {
         searchText: "",
         aboutOpen: true,
         calender: "Jan18",
@@ -77,4 +77,4 @@ class Title extends React.Component<TitleProps, TitleState> {
     }
 }
 
-export default Title;
+export default Titlebar;

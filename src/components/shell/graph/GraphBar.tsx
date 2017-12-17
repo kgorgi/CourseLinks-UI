@@ -3,7 +3,7 @@ import * as React from "react";
 import Checkbox from "material-ui/Checkbox";
 import Button from "material-ui/Button";
 
-import DependencyTypes from "../utils/DependencyTypes";
+import DependencyTypes from "../../utils/types/DependencyTypes";
 
 import "./css/GraphBar.css";
 
@@ -15,7 +15,6 @@ export interface GraphBarProps {
     onDisplayPreCoReqs: () => void;
     onHelpButton: () => void;
 }
-
 
 class GraphBar extends React.Component<GraphBarProps> {
 

@@ -11,7 +11,7 @@ import Button from "material-ui/Button";
 import { MenuItem } from "material-ui/Menu";
 
 import { Transition } from "./ModalTransition";
-import { Calendar } from "./ServerTypes";
+import { Calendar } from "../types/ServerTypes";
 
 export interface AboutModalProps {
     open: boolean;

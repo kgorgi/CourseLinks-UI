@@ -1,46 +1,17 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
-import { Options, Network, Color } from "vis";
+import { Network, Color } from "vis";
 
-import { GraphInfo } from "../utils/ServerTypes";
-import Course from "../utils/Course";
-import DependencyTypes from "../utils/DependencyTypes";
-import IDNameMap from "../utils/IDNameMap";
-import { CustomEdge, CustomNode, GraphData, Events } from "../utils/GraphTypes";
-
+import { GraphInfo } from "../../utils/types/ServerTypes";
+import Course from "../../utils/Course";
+import DependencyTypes from "../../utils/types/DependencyTypes";
+import IDNameMap from "../../utils/IDNameMap";
+import { CustomEdge, CustomNode, GraphData, Events } from "../../utils/types/GraphTypes";
 
 import GraphBar from "./GraphBar";
+import GraphOptions from "./GraphOptions";
 
 import "./css/GraphContainer.css";
-
-const options: Options = {
-  layout: {
-    improvedLayout: false,
-    hierarchical: {
-      enabled: true,
-      levelSeparation: 100,
-      nodeSpacing: 100,
-      blockShifting: false,
-      edgeMinimization: true,
-      direction: "UD",        // UD, DU, LR, RL
-      sortMethod: "directed"   // hubsize, directedF
-    }
-  },
-  edges: {
-    smooth: {
-      enabled: true,
-      type: "cubicBezier",
-      forceDirection: "vertical",
-      roundness: 0.5
-    }
-  },
-  interaction: {
-    dragNodes: false
-  },
-  physics: {
-    enabled: false
-  },
-};
 
 export interface GraphContainerProps {
   graphInfo?: GraphInfo;
@@ -85,7 +56,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
         />
         {graph && <Graph
           graph={this.state.graph}
-          options={options}
+          options={GraphOptions}
           events={events}
           style={{ height: "85vh" }}
           getNetwork={this.handleGetGraphNetwork}
