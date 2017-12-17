@@ -168,20 +168,45 @@
             font-weight: normal;
             margin: 0 0 .3333em 0;
         }
+
+        #schedules {
+            padding: 2px;
+            margin: 24px 6px 0 0;
+        }
+
+        #schedules legend {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #002754;
+        }
+
+        #schedules table td {
+            width: 33%;
+            text-align: center;
+            background-color: #DDD;
+            padding: 4px;
+            border: 3px solid white;
+        }
+
+        #schedules p {
+            margin: 0;
+            padding: 4px;
+            font-size: .8em;
+        }
     </style>
 </head>
 
 <body>
     <div onClick="handleOnClick(event)">
-	
-	</div>
-	
-	<script>
-		function handleOnClick(event){
-			event.preventDefault();
-			onLinkClick(event.target.innerText);
-		}
-	</script>
+
+    </div>
+
+    <script>
+        function handleOnClick(event) {
+            event.preventDefault();
+            onLinkClick(event.target.innerText, event.target.href);
+        }
+    </script>
 </body>
 
 </html>

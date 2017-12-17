@@ -39,6 +39,7 @@ const options: Options = {
 export interface GraphContainerProps {
   graphInfo?: GraphInfo;
   onCourseSelect: (name: string) => void;
+  onLegendSwitch: () => void;
   currentCourse?: string;
   selectedNode?: Course;
 }
@@ -124,6 +125,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       const { preReq, coReq, precoReq } = displayedTypes;
       const newValues = new DependencyTypes(!preReq, coReq, precoReq);
       this.setState({ displayedTypes: newValues });
+      this.props.onLegendSwitch();
     }
   }
 
@@ -134,6 +136,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       const { preReq, coReq, precoReq } = displayedTypes;
       const newValues = new DependencyTypes(preReq, !coReq, precoReq);
       this.setState({ displayedTypes: newValues });
+      this.props.onLegendSwitch();
     }
   }
 
@@ -144,6 +147,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       const { preReq, coReq, precoReq } = displayedTypes;
       const newValues = new DependencyTypes(preReq, coReq, !precoReq);
       this.setState({ displayedTypes: newValues });
+      this.props.onLegendSwitch();
     }
   }
 
@@ -200,6 +204,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     });
 
     this.setState({ graph: { nodes, edges } });
+    this.clearSelectedNode();
   }
 
   private createGraph = () => {
@@ -300,6 +305,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     this.allNodes = nodes;
     this.allEdges = edges;
     this.setState({ graph: { nodes, edges }, events: this.createEvent() });
+    this.clearSelectedNode();
   }
 
   private createEvent = (): Events => {
@@ -311,6 +317,12 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
         onCourseSelect(nameLookup.get(id) || "");
       }
     };
+  }
+
+  private clearSelectedNode = () => {
+    if (this.graphNetwork) {
+      this.graphNetwork.unselectAll();
+    }
   }
 }
 

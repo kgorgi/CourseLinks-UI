@@ -34,7 +34,7 @@ export interface Node {
     Level: number;
 }
 
-export const courseRegex = /^ *([A-Z|a-z]{2,4}) *(\d{3}) *$/;
+export const CourseRegex = /^ *([A-Z|a-z]{2,4}) *(\d{3}) *$/;
 
 export class DependencyTypes {
     public preReq: boolean;

@@ -1,12 +1,12 @@
 import * as React from "react";
-import { Course, courseRegex } from "./Course";
+import { Course } from "./Course";
 import { LoadCourseHTML } from "./Network";
 
 import "./css/CourseInfo.css";
 
 export interface CourseInfoProps {
     course?: Course;
-    onCourseLinkClick: (course: Course) => void;
+    onCourseLinkClick: (text: string, link: string) => void;
 }
 
 const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
@@ -21,11 +21,10 @@ class CourseInfo extends React.PureComponent<CourseInfoProps> {
         }
     }
 
-    handleOnLinkClick = (text: string) => {
-        const matches = courseRegex.exec(text);
-        if (matches && matches[1] && matches[2]) {
-            this.props.onCourseLinkClick(new Course(text));
-        }
+    handleOnLinkClick = (text?: string, link?: string) => {
+        if (text && link) {
+            this.props.onCourseLinkClick(text, link);
+        }        
     }
 
     loadCourse = async () => {
@@ -39,14 +38,14 @@ class CourseInfo extends React.PureComponent<CourseInfoProps> {
 
         const divs = this._iframe.contentDocument.body.getElementsByTagName("div");
         const div = divs[0];
-       
-        if (course) {      
+
+        if (course) {
             try {
                 div.innerHTML = await LoadCourseHTML(course);
             } catch {
-               div.innerHTML = errorHTML;
+                div.innerHTML = errorHTML;
             }
-           
+
         } else {
             div.innerHTML = startHTML;
         }

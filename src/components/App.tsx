@@ -10,7 +10,7 @@ import { createMuiTheme } from "material-ui/styles";
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
-import { Course, courseRegex, GraphInfo } from "./Course";
+import { Course, CourseRegex, GraphInfo } from "./Course";
 import { LoadCourseJSON } from "./Network";
 
 import "./css/App.css";
@@ -28,7 +28,7 @@ interface AppState {
 
   /** The current course */
   graphCourse?: Course;
-  
+
   /** The course displayed in the right side information panel */
   displayedInfoCourse?: Course;
 
@@ -47,14 +47,14 @@ class App extends React.Component<{}, AppState> {
   loadNewGraph = async (course: Course) => {
     try {
       const graphInfo = await LoadCourseJSON(course);
-      this.setState({ graphInfo, graphCourse: course, displayedInfoCourse: course });
+      this.setState({ graphInfo, graphCourse: course, displayedInfoCourse: course, graphSelectedCourse: undefined });
     } catch {
       this.setState({ invalidCourse: true });
     }
   }
 
   handleSearchSubmit = (courseStr: string) => {
-    const matches = courseRegex.exec(courseStr);
+    const matches = CourseRegex.exec(courseStr);
     if (matches && matches[1] && matches[2]) {
       const courseId = matches[1].toLocaleUpperCase() + " " + matches[2];
       this.loadNewGraph(new Course(courseId));
@@ -68,8 +68,29 @@ class App extends React.Component<{}, AppState> {
     this.setState({ displayedInfoCourse: newCourse });
   }
 
-  handleGraphCourseSelect = (graphSelectedCourse: Course) => {
-    this.setState({ graphSelectedCourse });
+  handleLinkClicked = (text: string, link: string) => {
+    const matches = CourseRegex.exec(text);
+    if (matches && matches[1] && matches[2]) {
+      const { graphInfo } = this.state;
+      if (!graphInfo) {
+        console.warn("App: GraphInfo is undefined");
+        return;
+      }
+
+      const course = new Course(text);
+      if (graphInfo.CourseLevelsInfo[text]) {
+        this.setState({ graphSelectedCourse: course });
+      } else {
+        this.loadNewGraph(course);
+      }
+
+    } else if (link.startsWith("http")) {
+      window.open(link);
+    }
+  }
+
+  handleLegendSwitch = () => {
+    this.setState({ displayedInfoCourse: undefined });
   }
 
   render() {
@@ -83,10 +104,11 @@ class App extends React.Component<{}, AppState> {
               graphInfo={graphInfo}
               onCourseSelect={this.handleinfoCourseSelect}
               selectedNode={graphSelectedCourse}
+              onLegendSwitch={this.handleLegendSwitch}
             />
           </div>
           <div className="App-info-pane">
-            <CourseInfo course={displayedInfoCourse} onCourseLinkClick={this.handleGraphCourseSelect} />
+            <CourseInfo course={displayedInfoCourse} onCourseLinkClick={this.handleLinkClicked} />
           </div>
         </div>
       </MuiThemeProvider>
