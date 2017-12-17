@@ -2,7 +2,7 @@
 import { Course, GraphInfo } from "./Course";
 
 // const serverUrl = "http://localhost/RelationsInfo/";
-const serverUrl = "http://localhost/RelationsInfo/";
+const serverUrl = "http://amandeep-laptop/Data/RelationsInfo/";
 
 export async function LoadCourseHTML(course: Course) {
     const { fieldOfStudy, courseNum } = course;

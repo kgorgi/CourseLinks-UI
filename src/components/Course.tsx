@@ -25,7 +25,7 @@ export interface CourseLink {
 
 export interface GraphInfo {
     RelationsList: CourseLink[];
-    CourseLevelsInfo: Node[];
+    CourseLevelsInfo: { [course: string]: number };
     course: Course;
 }
 
@@ -33,6 +33,8 @@ export interface Node {
     CourseId: string;
     Level: number;
 }
+
+export const courseRegex = /^ *([A-Z|a-z]{2,4}) *(\d{3}) *$/;
 
 export class DependencyTypes {
     public preReq: boolean;
@@ -50,7 +52,7 @@ export class DependencyTypes {
         if (this.preReq) {
             count += 1;
         }
-        
+
         if (this.coReq) {
             count += 1;
         }
@@ -60,5 +62,10 @@ export class DependencyTypes {
         }
 
         return count;
+    }
+
+    createCopy = () => {
+        const { preReq, coReq, precoReq } = this;
+        return new DependencyTypes(preReq, coReq, precoReq);
     }
 }

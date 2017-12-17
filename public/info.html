@@ -172,7 +172,16 @@
 </head>
 
 <body>
-    
+    <div onClick="handleOnClick(event)">
+	
+	</div>
+	
+	<script>
+		function handleOnClick(event){
+			event.preventDefault();
+			onLinkClick(event.target.innerText);
+		}
+	</script>
 </body>
 
 </html>

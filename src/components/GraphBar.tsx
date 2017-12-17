@@ -12,7 +12,6 @@ export interface GraphBarProps {
     onDisplayPreCoReqs: () => void;
 }
 
-
 class GraphBar extends React.Component<GraphBarProps> {
 
     renderLegend = () => {
@@ -37,6 +36,7 @@ class GraphBar extends React.Component<GraphBarProps> {
                             checked={preReq}
                             onClick={onDisplayPreReqs}
                             disabled={disableLastCheckbox && preReq}
+                            indeterminate={disableLastCheckbox && preReq}
                         />
                     }
                     < h4 className="Legend-text"> Pre-requisite: </h4>
@@ -53,6 +53,7 @@ class GraphBar extends React.Component<GraphBarProps> {
                             checked={coReq}
                             onClick={onDisplayCoReqs}
                             disabled={disableLastCheckbox && coReq}
+                            indeterminate={disableLastCheckbox && coReq}
                         />
                     }
                     <h4 className="Legend-text"> Co-requisite: </h4>
@@ -69,6 +70,7 @@ class GraphBar extends React.Component<GraphBarProps> {
                             checked={precoReq}
                             onClick={onDisplayPreCoReqs}
                             disabled={disableLastCheckbox && precoReq}
+                            indeterminate={disableLastCheckbox && precoReq}
                         />
                     }
                     <h4 className="Legend-text"> Pre/Co-requisite: </h4>

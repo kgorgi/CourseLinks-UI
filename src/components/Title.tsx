@@ -3,8 +3,7 @@ import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
-import { Course, GraphInfo } from "./Course";
-import { LoadCourseJSON } from "./Network";
+import { Course } from "./Course";
 
 import Dialog, {
     DialogActions,
@@ -17,15 +16,13 @@ import Slide from "material-ui/transitions/Slide";
 import "./css/Title.css";
 
 export interface TitleProps {
-    onSearch: (infoCourse: Course | undefined, graphInfo: GraphInfo | undefined) => void;
+    onSearch: (courseStr: string) => any;
+    graphCourse?: Course;
+    invalidCourse: boolean;
 }
-
-const courseRegex = /^ *([A-Z|a-z]{2,4}) *(\d{3}) *$/;
 
 interface TitleState {
     searchText: string;
-    error: boolean;
-    selectedCourse: string;
     aboutOpen: boolean;
     calender: string;
 }
@@ -33,8 +30,6 @@ interface TitleState {
 class Title extends React.Component<TitleProps, TitleState> {
     state: TitleState = {
         searchText: "",
-        error: false,
-        selectedCourse: "",
         aboutOpen: true,
         calender: "Jan18",
     };
@@ -49,23 +44,7 @@ class Title extends React.Component<TitleProps, TitleState> {
             event.preventDefault();
         }
 
-        const { searchText } = this.state;
-        const matches = courseRegex.exec(searchText);
-        if (matches && matches[1] && matches[2]) {
-            const courseId = matches[1].toLocaleUpperCase() + " " + matches[2];
-            const course = new Course(courseId);
-            try {
-                const infoPackage = await LoadCourseJSON(course);
-                this.props.onSearch(course, infoPackage);
-                this.setState({ searchText: courseId, error: false, selectedCourse: courseId });
-            } catch {
-                this.setState({ error: true });
-            }
-
-        } else {
-            this.setState({ error: true });
-        }
-
+        this.props.onSearch(this.state.searchText);
     }
 
     handleCalenderSelect = (event: any) => {
@@ -99,7 +78,7 @@ class Title extends React.Component<TitleProps, TitleState> {
                         <br /> <br />
                         Select Calender:
                     </DialogContentText>
-                
+
                     <Select
                         value={calender}
                         onChange={this.handleCalenderSelect}
@@ -119,13 +98,11 @@ class Title extends React.Component<TitleProps, TitleState> {
     }
 
     render() {
-        const { error, selectedCourse } = this.state;
+        const { invalidCourse, graphCourse } = this.props;
         return (
             <div className="Title" style={{}}>
-                <div className="Title-name"> Course Links{selectedCourse && ": " + selectedCourse}</div>
-
+                <div className="Title-name"> Course Links{graphCourse && ": " + graphCourse.name}</div>
                 <div className="Title-middle">
-
                     <h4 className="Title-text"> Enter a Course: </h4>
                     <form className="Title-search-box" onSubmit={this.handleSearch}>
                         <TextField
@@ -133,7 +110,7 @@ class Title extends React.Component<TitleProps, TitleState> {
                             onChange={this.handleUserInput}
                             name="Enter a Course"
                             placeholder="SENG 265"
-                            error={error}
+                            error={invalidCourse}
                         />
                     </form>
 
@@ -141,7 +118,7 @@ class Title extends React.Component<TitleProps, TitleState> {
                         Search
                     </Button>
                     <h4 className="Title-error">
-                        {error && "Error: Invalid Course"}
+                        {invalidCourse && "Error: Invalid Course"}
                     </h4>
                 </div>
                 <Button
