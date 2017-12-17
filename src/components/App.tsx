@@ -11,7 +11,7 @@ import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
 import { Course, CourseRegex, GraphInfo } from "./Course";
-import { LoadCourseJSON } from "./Network";
+import { LoadCourseJSON, LoadCoursesListJSON } from "./Network";
 
 import "./css/App.css";
 
@@ -37,6 +37,8 @@ interface AppState {
 
   /** Whether an error has occured for the user's searched graph */
   invalidCourse: boolean;
+
+  courseList?: string[];
 }
 
 class App extends React.Component<{}, AppState> {
@@ -54,13 +56,26 @@ class App extends React.Component<{}, AppState> {
   }
 
   handleSearchSubmit = (courseStr: string) => {
+    let invalidCourse = true;
+
     const matches = CourseRegex.exec(courseStr);
-    if (matches && matches[1] && matches[2]) {
-      const courseId = matches[1].toLocaleUpperCase() + " " + matches[2];
-      this.loadNewGraph(new Course(courseId));
-    } else {
-      this.setState({ invalidCourse: true });
+    if (!matches) {
+      return;
     }
+
+    const fieldOfStudy = matches[1].toLocaleUpperCase();
+    const courseNum = matches[2];
+
+    if (fieldOfStudy && courseNum) {
+
+      const id = fieldOfStudy + courseNum;
+      if (this.state.courseList && this.state.courseList.indexOf(id)) {
+        this.loadNewGraph(new Course(fieldOfStudy, courseNum));
+        invalidCourse = false;
+      }
+    }
+
+    this.setState({ invalidCourse });
   }
 
   handleinfoCourseSelect = (name: string) => {
@@ -113,6 +128,11 @@ class App extends React.Component<{}, AppState> {
         </div>
       </MuiThemeProvider>
     );
+  }
+
+  async componentDidMount() {
+    const courseList = await LoadCoursesListJSON();
+    this.setState({ courseList: courseList.Courses });
   }
 }
 

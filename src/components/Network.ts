@@ -1,5 +1,5 @@
 
-import { Course, GraphInfo } from "./Course";
+import { Course, GraphInfo, CourseList } from "./Course";
 
 // const serverUrl = "http://localhost/RelationsInfo/";
 const serverUrl = "http://amandeep-laptop/Data/RelationsInfo/";
@@ -7,9 +7,6 @@ const serverUrl = "http://amandeep-laptop/Data/RelationsInfo/";
 export async function LoadCourseHTML(course: Course) {
     const { fieldOfStudy, courseNum } = course;
     const html =  await fetch(serverUrl + fieldOfStudy + "/" + fieldOfStudy + courseNum + ".html");
-    if (!html.ok) {
-        throw Error(html.statusText);
-    }
     const htmlText = await html.text();
     return htmlText;
 }
@@ -20,4 +17,10 @@ export async function LoadCourseJSON(course: Course) {
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
     coursePackage.course = course;
     return coursePackage;
+}
+
+export async function LoadCoursesListJSON() {
+    const response = await fetch(serverUrl + "courses.json");
+    const coursesList = await JSON.parse(await response.text()) as CourseList;
+    return coursesList;
 }
