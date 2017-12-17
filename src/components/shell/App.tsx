@@ -2,7 +2,7 @@ import * as React from "react";
 
 import Title from "./Title";
 import GraphContainer from "./GraphContainer";
-import CourseInfo from "./CourseInfo";
+import CourseInfoPanel from "./CourseInfoPanel";
 
 import { MuiThemeProvider } from "material-ui/styles";
 import { createMuiTheme } from "material-ui/styles";
@@ -10,8 +10,9 @@ import { createMuiTheme } from "material-ui/styles";
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
-import { Course, CourseRegex, GraphInfo } from "./Course";
-import { LoadCourseJSON, LoadCoursesListJSON } from "./Network";
+import { GraphInfo } from "../utils/ServerTypes";
+import Course, { CourseRegex } from "../utils/Course";
+import { LoadCourseJSON, LoadCoursesListJSON } from "../utils/Network";
 
 import "./css/App.css";
 
@@ -70,8 +71,12 @@ class App extends React.Component<{}, AppState> {
 
       const id = fieldOfStudy + courseNum;
       if (this.state.courseList && this.state.courseList.indexOf(id)) {
-        this.loadNewGraph(new Course(fieldOfStudy, courseNum));
-        invalidCourse = false;
+        const course = new Course(fieldOfStudy, courseNum);
+        const { graphCourse } = this.state;
+        if (!graphCourse || course.equals(graphCourse)) {
+          this.loadNewGraph(course);
+          invalidCourse = false;
+        }
       }
     }
 
@@ -123,7 +128,7 @@ class App extends React.Component<{}, AppState> {
             />
           </div>
           <div className="App-info-pane">
-            <CourseInfo course={displayedInfoCourse} onCourseLinkClick={this.handleLinkClicked} />
+            <CourseInfoPanel course={displayedInfoCourse} onCourseLinkClick={this.handleLinkClicked} />
           </div>
         </div>
       </MuiThemeProvider>

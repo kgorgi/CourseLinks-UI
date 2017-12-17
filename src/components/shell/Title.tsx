@@ -1,17 +1,18 @@
 import * as React from "react";
+
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
 import Select from "material-ui/Select";
 import { MenuItem } from "material-ui/Menu";
-import { Course } from "./Course";
-
 import Dialog, {
     DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
 } from "material-ui/Dialog";
-import Slide from "material-ui/transitions/Slide";
+
+import  Course from "../utils/Course";
+import { Transition } from "../utils/ModalTransition";
 
 import "./css/Title.css";
 
@@ -94,7 +95,8 @@ class Title extends React.Component<TitleProps, TitleState> {
                         Okay
                     </Button>
                 </DialogActions>
-            </ Dialog>);
+            </ Dialog>
+        );
     }
 
     render() {
@@ -136,7 +138,3 @@ class Title extends React.Component<TitleProps, TitleState> {
 }
 
 export default Title;
-
-function Transition(props: any) {
-    return <Slide direction="up" {...props} />;
-}

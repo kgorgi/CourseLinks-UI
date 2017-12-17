@@ -1,5 +1,6 @@
 
-import { Course, GraphInfo, CourseList } from "./Course";
+import { GraphInfo, CourseList } from "./ServerTypes";
+import Course from "./Course";
 
 // const serverUrl = "http://localhost/RelationsInfo/";
 const serverUrl = "http://amandeep-laptop/Data/RelationsInfo/";
@@ -15,7 +16,6 @@ export async function LoadCourseJSON(course: Course) {
     const { fieldOfStudy, courseNum } = course;
     const response = await fetch(serverUrl + fieldOfStudy + "/" + fieldOfStudy + courseNum + ".json");
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
-    coursePackage.course = course;
     return coursePackage;
 }
 

@@ -18,11 +18,18 @@
     padding: 0.5em;
 }
 
-.GraphBar-legend-item {
+.GraphBar-legend-item,
+.GraphBar-legend-item-select {
     display: flex;
     flex-direction: row;
     align-items: center;
     padding: 0.5em;
+    width: 14em;
+}
+
+.GraphBar-legend-item-select {
+    padding-left: 48px;
+    width: 8em;
 }
 
 .GraphBar-arrow-green,
@@ -47,4 +54,9 @@
 
 .GraphBar-arrow-orange{
     color: orange;
+}
+
+.GraphBar-help-button {
+    margin: 0.5em;
+    width: 3em;
 }

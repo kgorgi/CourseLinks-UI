@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "autosuggest-highlight": "^3.1.1",
     "material-ui": "^1.0.0-beta.23",
     "react": "^16.2.0",
+    "react-autosuggest": "^9.3.2",
     "react-dom": "^16.2.0",
     "react-graph-vis": "^1.0.2",
     "react-scripts-ts": "2.8.0",
@@ -20,6 +22,7 @@
     "@types/jest": "^21.1.8",
     "@types/node": "^8.0.57",
     "@types/react": "^16.0.28",
+    "@types/react-autosuggest": "^9.3.2",
     "@types/react-dom": "^16.0.3",
     "@types/react-split-pane": "^0.1.10",
     "@types/vis": "^4.21.0"

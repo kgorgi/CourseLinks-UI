@@ -1,8 +1,9 @@
 import * as React from "react";
-import { Course } from "./Course";
-import { LoadCourseHTML } from "./Network";
 
-import "./css/CourseInfo.css";
+import Course from "../utils/Course";
+import { LoadCourseHTML } from "../utils/Network";
+
+import "./css/CourseInfoPanel.css";
 
 export interface CourseInfoProps {
     course?: Course;
@@ -12,7 +13,7 @@ export interface CourseInfoProps {
 const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
 const errorHTML = "<h1 class=\"subject-and-number\">Error Cannot Load Course</h1>";
 
-class CourseInfo extends React.PureComponent<CourseInfoProps> {
+class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
 
     componentDidUpdate() {
@@ -66,4 +67,4 @@ class CourseInfo extends React.PureComponent<CourseInfoProps> {
 
 }
 
-export default CourseInfo;
+export default CourseInfoPanel;

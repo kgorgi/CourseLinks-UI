@@ -1,9 +1,13 @@
 import * as React from "react";
 import Graph from "react-graph-vis";
-import { Course, GraphInfo, DependencyTypes } from "./Course";
-import GraphBar from "./GraphBar";
-import { CustomEdge, CustomNode, GraphData, Events } from "./GraphTypes";
 import { Options, Network, Color } from "vis";
+
+import { GraphInfo } from "../utils/ServerTypes";
+import Course from "../utils/Course";
+import DependencyTypes from "../utils/DependencyTypes";
+import { CustomEdge, CustomNode, GraphData, Events } from "../utils/GraphTypes";
+
+import GraphBar from "./GraphBar";
 
 import "./css/GraphContainer.css";
 
@@ -67,28 +71,24 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   render() {
     const { graph, events, validTypes, displayedTypes } = this.state;
 
-    if (graph) {
-      return (
-        <div className="GraphContainer">
-          <GraphBar
-            validTypes={validTypes}
-            displayTypes={displayedTypes}
-            onDisplayPreReqs={this.handleDisplayPreReqs}
-            onDisplayCoReqs={this.handleDisplayCoReqs}
-            onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
-          />
-          <Graph
-            graph={this.state.graph}
-            options={options}
-            events={events}
-            style={{ height: "85vh" }}
-            getNetwork={this.handleGetGraphNetwork}
-          />
-        </div>
-      );
-    } else {
-      return null;
-    }
+    return (
+      <div className="GraphContainer">
+        <GraphBar
+          validTypes={validTypes}
+          displayTypes={displayedTypes}
+          onDisplayPreReqs={this.handleDisplayPreReqs}
+          onDisplayCoReqs={this.handleDisplayCoReqs}
+          onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
+        />
+        {graph && <Graph
+          graph={this.state.graph}
+          options={options}
+          events={events}
+          style={{ height: "85vh" }}
+          getNetwork={this.handleGetGraphNetwork}
+        />}
+      </div>
+    );
   }
 
   async componentDidUpdate(prevProps: GraphContainerProps, prevState: GraphContainerState) {
