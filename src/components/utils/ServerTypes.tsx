@@ -17,3 +17,12 @@ export interface Node {
 export interface CourseList {
     Courses: string[];
 }
+
+export interface Calenders {
+    available: Calender[];
+}
+
+export interface Calender {
+    displayName: string;
+    uri: string;
+}

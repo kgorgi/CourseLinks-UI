@@ -71,6 +71,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   render() {
     const { graph, events, validTypes, displayedTypes } = this.state;
 
+    console.log(graph);
     return (
       <div className="GraphContainer">
         <GraphBar
@@ -166,7 +167,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     const nodeMap: Map<string, boolean> = new Map<string, boolean>();
 
     // Filter Edges
-    const edges = allEdges.filter((edge) => {
+    let edges = allEdges.filter((edge) => {
       const showEdge = (edge.type === "prereq" && displayedTypes.preReq) ||
         (edge.type === "coreq" && displayedTypes.coReq) ||
         (edge.type === "precoreq" && displayedTypes.precoReq);
@@ -197,6 +198,25 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       return showEdge;
 
     });
+
+    // If only one type, overwrite the highlight color
+    if (displayedTypes.getCount() === 1) {
+      edges = edges.map(value => {
+        if (value.color) {
+          const color = value.color.color;
+          value.color = {
+            color,
+            highlight: "orange"
+          };
+        }
+
+        if (value.id) {
+          value.id = undefined;
+        }
+
+        return value;
+      });
+    }
 
     // Filter Nodes
     const nodes = this.allNodes.filter((node) => {

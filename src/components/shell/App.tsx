@@ -70,12 +70,15 @@ class App extends React.Component<{}, AppState> {
     if (fieldOfStudy && courseNum) {
 
       const id = fieldOfStudy + courseNum;
-      if (this.state.courseList && this.state.courseList.indexOf(id)) {
+      if (this.state.courseList && this.state.courseList.indexOf(id) > 0) {
         const course = new Course(fieldOfStudy, courseNum);
         const { graphCourse } = this.state;
-        if (!graphCourse || course.equals(graphCourse)) {
+        
+        if (!graphCourse || !course.equals(graphCourse)) {
           this.loadNewGraph(course);
           invalidCourse = false;
+        } else {
+          return;
         }
       }
     }
