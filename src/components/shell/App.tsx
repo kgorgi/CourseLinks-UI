@@ -121,7 +121,7 @@ class App extends React.Component<{}, AppState> {
 
       const course = new Course(text);
       if (graphInfo.CourseLevelsInfo[text]) {
-        this.setState({ graphSelectedCourse: course });
+        this.setState({ graphSelectedCourse: course, displayedInfoCourse: course });
       } else {
         this.loadNewGraph(course);
       }

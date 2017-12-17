@@ -5,7 +5,9 @@ import { Options, Network, Color } from "vis";
 import { GraphInfo } from "../utils/ServerTypes";
 import Course from "../utils/Course";
 import DependencyTypes from "../utils/DependencyTypes";
+import IDNameMap from "../utils/IDNameMap";
 import { CustomEdge, CustomNode, GraphData, Events } from "../utils/GraphTypes";
+
 
 import GraphBar from "./GraphBar";
 
@@ -63,8 +65,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
   private graphNetwork: Network;
 
-  private nameLookup: Map<number, string>;
-  private idLookup: Map<string, number>;
+  private _idNameMap = new IDNameMap();
 
   private allEdges: CustomEdge[];
   private allNodes: CustomNode[];
@@ -108,7 +109,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
     const { selectedNode } = this.props;
     if (prevProps.selectedNode !== selectedNode && selectedNode && this.graphNetwork) {
-      const id = this.idLookup.get(selectedNode.name);
+      const id = this._idNameMap.getId(selectedNode.name);
       if (id) {
         this.graphNetwork.selectNodes([id], true);
       }
@@ -153,10 +154,10 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   }
 
   private updateEdges = () => {
-    const { allEdges, allNodes, nameLookup } = this;
+    const { allEdges, allNodes, _idNameMap } = this;
 
     const { displayedTypes } = this.state;
-    if (!allEdges || !allNodes || !nameLookup || !displayedTypes) {
+    if (!allEdges || !allNodes || !displayedTypes) {
       return;
     }
 
@@ -169,8 +170,8 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
         (edge.type === "precoreq" && displayedTypes.precoReq);
 
       if (showEdge) {
-        const toNode = nameLookup.get(edge.to as number);
-        const fromNode = nameLookup.get(edge.from as number);
+        const toNode = _idNameMap.getName(edge.to as number);
+        const fromNode = _idNameMap.getName(edge.from as number);
 
         if (!toNode) {
           console.warn("GraphContainer: UpdateGraph Invalid To Node:", toNode);
@@ -234,26 +235,26 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       this.setState({ graph, validTypes: undefined, displayedTypes: undefined });
       return;
     }
-    const idMap: Map<string, number> = new Map<string, number>();
-    const nameMap: Map<number, string> = new Map<number, string>();
+    
     let currId = 0;
 
     let edges: CustomEdge[] = [];
 
     const validTypes = new DependencyTypes(false, false, false);
 
+    const  {_idNameMap } = this;
+    _idNameMap.clear();
+
     for (const link of graphInfo.RelationsList) {
       // Create Source Node
-      if (!idMap.has(link.Source)) {
-        idMap.set(link.Source, currId);
-        nameMap.set(currId, link.Source);
+      if (!_idNameMap.has(link.Source)) {
+        _idNameMap.set(link.Source, currId);
         currId += 1;
       }
 
       // Create Destionation Node
-      if (!idMap.has(link.Destination)) {
-        idMap.set(link.Destination, currId);
-        nameMap.set(currId, link.Destination);
+      if (!_idNameMap.has(link.Destination)) {
+        _idNameMap.set(link.Destination, currId);
         currId += 1;
       }
 
@@ -271,8 +272,8 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
       // Add Edge
       edges.push({
-        to: idMap.get(link.Source),
-        from: idMap.get(link.Destination),
+        to: _idNameMap.getId(link.Source),
+        from: _idNameMap.getId(link.Destination),
         color: {
           color,
           highlight: color
@@ -292,19 +293,15 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       });
     }
 
-    // Set Object Dictionaries
-    this.idLookup = idMap;
-    this.nameLookup = nameMap;
-
     // Set Valid and DisplayedTypes
     const displayedTypes = validTypes.createCopy();
     this.setState({ validTypes, displayedTypes });
 
     // Add Nodes
     const nodes: CustomNode[] = [];
-    const courseKeys = Array.from(idMap.keys());
+    const courseKeys = _idNameMap.getAllNames();
     for (const key of courseKeys) {
-      const id = idMap.get(key);
+      const id = _idNameMap.getId(key);
       const level = graphInfo.CourseLevelsInfo[key];
 
       if (typeof id === "number") {
@@ -332,11 +329,11 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
   private createEvent = (): Events => {
     const { onCourseSelect } = this.props;
-    const { nameLookup } = this;
+    const { _idNameMap } = this;
     return {
       selectNode: function (properties: any) {
         const id: number = parseInt(properties.nodes[0], 10);
-        onCourseSelect(nameLookup.get(id) || "");
+        onCourseSelect(_idNameMap.getName(id) || "");
       }
     };
   }
