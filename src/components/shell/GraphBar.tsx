@@ -2,15 +2,8 @@ import * as React from "react";
 
 import Checkbox from "material-ui/Checkbox";
 import Button from "material-ui/Button";
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "material-ui/Dialog";
 
 import DependencyTypes from "../utils/DependencyTypes";
-import { Transition } from "../utils/ModalTransition";
 
 import "./css/GraphBar.css";
 
@@ -20,21 +13,11 @@ export interface GraphBarProps {
     onDisplayPreReqs: () => void;
     onDisplayCoReqs: () => void;
     onDisplayPreCoReqs: () => void;
+    onHelpButton: () => void;
 }
 
-interface GraphBarState {
-    helpOpen: boolean;
-}
 
-class GraphBar extends React.Component<GraphBarProps, GraphBarState> {
-    state: GraphBarState = {
-        helpOpen: false
-    };
-
-    handleHelpClicked = () => {
-        const helpOpen = !this.state.helpOpen;
-        this.setState({ helpOpen });
-    }
+class GraphBar extends React.Component<GraphBarProps> {
 
     renderLegend = () => {
         const { validTypes, displayTypes } = this.props;
@@ -112,40 +95,16 @@ class GraphBar extends React.Component<GraphBarProps, GraphBarState> {
         return elements;
     }
 
-    renderHelpModal = () => {
-        return (
-            <Dialog
-                open={this.state.helpOpen}
-                transition={Transition}
-                keepMounted={true}
-                onRequestClose={this.handleHelpClicked}
-            >
-                <DialogTitle>{"Help"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Coming Soon!
-                    </DialogContentText>
-
-                    <DialogActions>
-                        <Button onClick={this.handleHelpClicked} color="primary">
-                            Okay
-                        </Button>
-                    </DialogActions>
-                </DialogContent>
-            </Dialog>
-        );
-    }
-
     render() {
+        const { onHelpButton } = this.props;
         return (
             <div className="GraphBar" >
                 <div className="GraphBar-legend">
                     {this.renderLegend()}
                 </div>
-                <Button raised={true} color="primary" className="GraphBar-help-button" onClick={this.handleHelpClicked}>
+                <Button raised={true} color="primary" className="GraphBar-help-button" onClick={onHelpButton}>
                     Help
                 </Button>
-                {this.renderHelpModal()}
             </div >
         );
     }

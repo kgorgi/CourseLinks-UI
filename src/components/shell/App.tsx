@@ -10,9 +10,11 @@ import { createMuiTheme } from "material-ui/styles";
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
 
-import { GraphInfo } from "../utils/ServerTypes";
+import { GraphInfo, Calendar } from "../utils/ServerTypes";
 import Course, { CourseRegex } from "../utils/Course";
 import { LoadCourseJSON, LoadCoursesListJSON } from "../utils/Network";
+import AboutModal from "../utils/AboutModal";
+import HelpModal from "../utils/HelpModal";
 
 import "./css/App.css";
 
@@ -39,12 +41,24 @@ interface AppState {
   /** Whether an error has occured for the user's searched graph */
   invalidCourse: boolean;
 
+  /** The list of currently available courses */
   courseList?: string[];
+
+  /** The current calendar */
+  calendarUri?: string;
+
+  /** The current list of calendars */
+  calendarList?: Calendar[];
+
+  aboutOpen: boolean;
+  helpOpen: boolean;
 }
 
 class App extends React.Component<{}, AppState> {
   state: AppState = {
-    invalidCourse: false
+    invalidCourse: false,
+    aboutOpen: true,
+    helpOpen: false
   };
 
   loadNewGraph = async (course: Course) => {
@@ -73,7 +87,7 @@ class App extends React.Component<{}, AppState> {
       if (this.state.courseList && this.state.courseList.indexOf(id) > 0) {
         const course = new Course(fieldOfStudy, courseNum);
         const { graphCourse } = this.state;
-        
+
         if (!graphCourse || !course.equals(graphCourse)) {
           this.loadNewGraph(course);
           invalidCourse = false;
@@ -116,31 +130,71 @@ class App extends React.Component<{}, AppState> {
     this.setState({ displayedInfoCourse: undefined });
   }
 
+  // About Modal Handlers
+  handleAboutClicked = () => {
+    const aboutOpen = !this.state.aboutOpen;
+    this.setState({ aboutOpen });
+  }
+
+  handleHelpClicked = () => {
+    const helpOpen = !this.state.helpOpen;
+    this.setState({ helpOpen });
+  }
+
+  handleGetStarted = () => {
+    this.handleAboutClicked();
+    this.handleHelpClicked();
+  }
+
   render() {
-    const { graphInfo, graphCourse, displayedInfoCourse, graphSelectedCourse, invalidCourse } = this.state;
+    const { 
+      graphInfo, 
+      graphCourse, 
+      displayedInfoCourse, 
+      graphSelectedCourse, 
+      invalidCourse, 
+      aboutOpen, 
+      helpOpen 
+    } = this.state;
+
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <div className="App-graph">
-            <Title onSearch={this.handleSearchSubmit} graphCourse={graphCourse} invalidCourse={invalidCourse} />
+            <Title 
+              onSearch={this.handleSearchSubmit} 
+              graphCourse={graphCourse} 
+              invalidCourse={invalidCourse} 
+              openAboutModal={this.handleAboutClicked} 
+            />
             <GraphContainer
               graphInfo={graphInfo}
               onCourseSelect={this.handleinfoCourseSelect}
               selectedNode={graphSelectedCourse}
               onLegendSwitch={this.handleLegendSwitch}
+              onHelpButton={this.handleHelpClicked}
             />
           </div>
           <div className="App-info-pane">
             <CourseInfoPanel course={displayedInfoCourse} onCourseLinkClick={this.handleLinkClicked} />
           </div>
+          <AboutModal 
+            onClose={this.handleAboutClicked} 
+            open={aboutOpen} 
+            onGetStarted={this.handleGetStarted}
+          />
+          <HelpModal onClose={this.handleHelpClicked} open={helpOpen} />
         </div>
       </MuiThemeProvider>
     );
   }
 
   async componentDidMount() {
+    // const calendarList = await LoadCalendarJSON();
+    // this.setState({ calendarList });
     const courseList = await LoadCoursesListJSON();
     this.setState({ courseList: courseList.Courses });
+
   }
 }
 

@@ -1,31 +1,37 @@
 
-import { GraphInfo, CourseList } from "./ServerTypes";
+import { GraphInfo, CourseList, Calendars } from "./ServerTypes";
 import Course from "./Course";
 
-export async function LoadCourseHTML(course: Course) {
+export async function LoadCourseHTML(course: Course, calendar?: string) {
     const { fieldOfStudy, courseNum } = course;
-    const html = await fetch(getBasepath("courses" + fieldOfStudy, fieldOfStudy + courseNum, false));
+    const html = await fetch(getBasepath("courses" + fieldOfStudy, fieldOfStudy + courseNum + ".html"));
     const htmlText = await html.text();
     return htmlText;
 }
 
-export async function LoadCourseJSON(course: Course) {
+export async function LoadCourseJSON(course: Course, calendar?: string) {
     const { fieldOfStudy, courseNum } = course;
-    const response = await fetch(getBasepath("courses/" + fieldOfStudy, fieldOfStudy + courseNum, true));
+    const response = await fetch(getBasepath("courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".json"));
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
     return coursePackage;
 }
 
-export async function LoadCoursesListJSON() {
-    const response = await fetch(getBasepath("courses", "courses", true));
+export async function LoadCoursesListJSON(calendar?: string) {
+    const response = await fetch(getBasepath("courses", "courses.json"));
     const coursesList = await JSON.parse(await response.text()) as CourseList;
     return coursesList;
+}
+
+export async function LoadCalendarJSON() {
+    const response = await fetch(getBasepath("", "calendars.json"));
+    const dataObject = await JSON.parse(await response.text()) as Calendars;
+    return dataObject.available;
 }
 
 const baseOverride = false;
 const overrideUrl = "http://amandeep-laptop/data/RelationsInfo";
 
-function getBasepath(filePath: string, fileName: string, isJson: boolean) {
+function getBasepath(filePath: string, fileName: string) {
     // Resolve Hosted Path
     const server = window.location.origin;
     const pathname = window.location.pathname;
@@ -44,7 +50,5 @@ function getBasepath(filePath: string, fileName: string, isJson: boolean) {
         newPathName = overrideUrl;
     }
 
-    const fileType = isJson ? ".json" : ".html";
-
-    return server + "/" + newPathName + "/" + filePath + "/" + fileName + fileType;
+    return server + "/" + newPathName + "/" + filePath + "/" + fileName;
 }

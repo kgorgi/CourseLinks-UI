@@ -46,6 +46,7 @@ export interface GraphContainerProps {
   onLegendSwitch: () => void;
   currentCourse?: string;
   selectedNode?: Course;
+  onHelpButton: () => void;
 }
 
 interface GraphContainerState {
@@ -70,8 +71,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
   render() {
     const { graph, events, validTypes, displayedTypes } = this.state;
-
-    console.log(graph);
+    const { onHelpButton } = this.props;
     return (
       <div className="GraphContainer">
         <GraphBar
@@ -80,6 +80,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
           onDisplayPreReqs={this.handleDisplayPreReqs}
           onDisplayCoReqs={this.handleDisplayCoReqs}
           onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
+          onHelpButton={onHelpButton}
         />
         {graph && <Graph
           graph={this.state.graph}

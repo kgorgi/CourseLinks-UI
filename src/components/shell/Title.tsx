@@ -2,17 +2,8 @@ import * as React from "react";
 
 import Button from "material-ui/Button";
 import TextField from "material-ui/TextField";
-import Select from "material-ui/Select";
-import { MenuItem } from "material-ui/Menu";
-import Dialog, {
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-} from "material-ui/Dialog";
 
 import  Course from "../utils/Course";
-import { Transition } from "../utils/ModalTransition";
 
 import "./css/Title.css";
 
@@ -20,6 +11,7 @@ export interface TitleProps {
     onSearch: (courseStr: string) => any;
     graphCourse?: Course;
     invalidCourse: boolean;
+    openAboutModal: () => void;
 }
 
 interface TitleState {
@@ -48,59 +40,8 @@ class Title extends React.Component<TitleProps, TitleState> {
         this.props.onSearch(this.state.searchText);
     }
 
-    handleCalenderSelect = (event: any) => {
-        const calender = event.target.value;
-        this.setState({ calender });
-    }
-
-    handleAboutOpen = () => {
-        this.setState({ aboutOpen: true });
-    }
-
-    handleAboutClose = () => {
-        this.setState({ aboutOpen: false });
-    }
-
-    createDialog = () => {
-        const { calender } = this.state;
-        return (
-            <Dialog
-                open={this.state.aboutOpen}
-                transition={Transition}
-                keepMounted={true}
-                onRequestClose={this.handleAboutClose}
-            >
-                <DialogTitle>{"Welcome to Course Links!"}</DialogTitle>
-                <DialogContent>
-                    <DialogContentText>
-                        Course Links is a website that shows you the different kind of links between UVic Courses.
-                         <br /> <br />
-                        Created by Kian Gorgichuk and Amandeep Singh
-                        <br /> <br />
-                        Select Calender:
-                    </DialogContentText>
-
-                    <Select
-                        value={calender}
-                        onChange={this.handleCalenderSelect}
-                        className="Title-search-box"
-                        fullWidth={true}
-                    >
-                        <MenuItem value="Jan18">Janurary 2018</MenuItem>
-                        <MenuItem value="Sept17">September 2017</MenuItem>
-                    </Select>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleAboutClose} color="primary">
-                        Okay
-                    </Button>
-                </DialogActions>
-            </ Dialog>
-        );
-    }
-
     render() {
-        const { invalidCourse, graphCourse } = this.props;
+        const { invalidCourse, graphCourse, openAboutModal } = this.props;
         return (
             <div className="Title" style={{}}>
                 <div className="Title-name"> Course Links{graphCourse && ": " + graphCourse.name}</div>
@@ -127,11 +68,10 @@ class Title extends React.Component<TitleProps, TitleState> {
                     raised={true}
                     color="primary"
                     className="Title-about-button"
-                    onClick={this.handleAboutOpen}
+                    onClick={openAboutModal}
                 >
                     About
                 </Button>
-                {this.createDialog()}
             </div >
         );
     }

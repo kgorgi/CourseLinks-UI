@@ -18,11 +18,11 @@ export interface CourseList {
     Courses: string[];
 }
 
-export interface Calenders {
-    available: Calender[];
+export interface Calendars {
+    available: Calendar[];
 }
 
-export interface Calender {
+export interface Calendar {
     displayName: string;
     uri: string;
 }
