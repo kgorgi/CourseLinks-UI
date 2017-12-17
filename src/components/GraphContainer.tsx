@@ -2,10 +2,12 @@ import * as React from "react";
 import Graph from "react-graph-vis";
 import { Course, GraphInfo, DependencyTypes } from "./Course";
 import GraphBar from "./GraphBar";
+import { CustomEdge, CustomNode, GraphData, Events } from "./GraphTypes";
+import { Options, Network,  Color } from "vis";
 
 import "./css/GraphContainer.css";
 
-const options = {
+const options: Options = {
   layout: {
     improvedLayout: false,
     hierarchical: {
@@ -20,9 +22,11 @@ const options = {
   },
   edges: {
     smooth: {
+      enabled: true,
       type: "cubicBezier",
-      forceDirection: "vertical"
-    },
+      forceDirection: "vertical",
+      roundness: 0.5
+    }
   },
   interaction: {
     dragNodes: false
@@ -40,8 +44,8 @@ export interface GraphContainerProps {
 }
 
 interface GraphContainerState {
-  graph?: any;
-  events: any;
+  graph?: GraphData;
+  events: Events;
   validTypes?: DependencyTypes;
   displayedTypes?: DependencyTypes;
 }
@@ -51,13 +55,13 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     events: {}
   };
 
-  private graphNetwork: any;
+  private graphNetwork: Network;
 
   private nameLookup: Map<number, string>;
   private idLookup: Map<string, number>;
 
-  private allEdges: any[];
-  private allNodes: any[];
+  private allEdges: CustomEdge[];
+  private allNodes: CustomNode[];
 
   handleDisplayPreReqs = () => {
     const { displayedTypes } = this.state;
@@ -106,8 +110,8 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
         (edge.type === "precoreq" && displayedTypes.precoReq);
 
       if (showEdge) {
-        const toNode = nameLookup.get(edge.to);
-        const fromNode = nameLookup.get(edge.from);
+        const toNode = nameLookup.get(edge.to as number);
+        const fromNode = nameLookup.get(edge.from as number);
 
         if (!toNode) {
           console.warn("GraphContainer: UpdateGraph Invalid To Node:", toNode);
@@ -134,7 +138,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
     // Filter Nodes
     const nodes = this.allNodes.filter((node) => {
-      return nodeMap.has(node.label);
+      return nodeMap.has(node.label as string);
     });
 
     this.setState({ graph: { nodes, edges } });
@@ -149,7 +153,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     const nameMap: Map<number, string> = new Map<number, string>();
     let currId = 0;
 
-    let edges = [];
+    let edges: CustomEdge[] = [];
 
     const validTypes = new DependencyTypes(false, false, false);
 
@@ -195,7 +199,10 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     // If only one type, overwrite the highlight color
     if (validTypes.getCount() === 1) {
       edges = edges.map(value => {
-        value.color.highlight = "orange";
+        if (value.color) {
+          value.color.highlight = "orange";
+        }
+
         return value;
       });
     }
@@ -209,20 +216,22 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     this.setState({ validTypes, displayedTypes });
 
     // Add Nodes
-    const nodes = [];
+    const nodes: CustomNode[] = [];
     const courseKeys = Array.from(idMap.keys());
     for (const key of courseKeys) {
       const id = idMap.get(key);
       const level = graphInfo.CourseLevelsInfo[key];
 
       if (typeof id === "number") {
+        const color: Color = {
+          background: "#D2E5FF",
+          highlight: "orange"
+        };
+
         nodes.push({
           id,
           label: key,
-          color: {
-            color: "blue",
-            highlight: "orange"
-          },
+          color,
           level
         });
       } else {
@@ -266,24 +275,23 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     this.setState({ events: this.createEvent() });
   }
 
-  createEvent = (): any => {
+  createEvent = (): Events => {
     const { onCourseSelect } = this.props;
     const { nameLookup } = this;
     return {
-      selectNode: function (event: any) {
-        const id: number = parseInt(event.nodes[0], 10);
+      selectNode: function (properties: any) {
+        const id: number = parseInt(properties.nodes[0], 10);
         onCourseSelect(nameLookup.get(id) || "");
       }
     };
   }
 
-  handleGetGraphNetwork = (network: any) => {
+  handleGetGraphNetwork = (network: Network) => {
     this.graphNetwork = network;
   }
 
   render() {
     const { graph, events, validTypes, displayedTypes } = this.state;
-    const graphOptions: any = options;
 
     if (graph) {
       return (
@@ -297,7 +305,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
           />
           <Graph
             graph={this.state.graph}
-            options={graphOptions}
+            options={options}
             events={events}
             style={{ height: "85vh" }}
             getNetwork={this.handleGetGraphNetwork}
