@@ -12,7 +12,7 @@ import red from "material-ui/colors/red";
 
 import { GraphInfo, Calendar } from "../utils/ServerTypes";
 import Course, { CourseRegex } from "../utils/Course";
-import { LoadCourseJSON, LoadCoursesListJSON } from "../utils/Network";
+import { LoadCourseJSON, LoadCoursesListJSON, LoadCalendarJSON } from "../utils/Network";
 import AboutModal from "../utils/AboutModal";
 import HelpModal from "../utils/HelpModal";
 
@@ -62,8 +62,13 @@ class App extends React.Component<{}, AppState> {
   };
 
   loadNewGraph = async (course: Course) => {
+    const { calendarUri } = this.state;
+    if (!calendarUri) {
+      return;
+    }
+
     try {
-      const graphInfo = await LoadCourseJSON(course);
+      const graphInfo = await LoadCourseJSON(course, calendarUri);
       this.setState({ graphInfo, graphCourse: course, displayedInfoCourse: course, graphSelectedCourse: undefined });
     } catch {
       this.setState({ invalidCourse: true });
@@ -146,26 +151,33 @@ class App extends React.Component<{}, AppState> {
     this.handleHelpClicked();
   }
 
+  handleNewCalendar = async (calendarUri: string) => {
+    // Reset App
+    this.setState({ calendarUri });
+  }
+
   render() {
-    const { 
-      graphInfo, 
-      graphCourse, 
-      displayedInfoCourse, 
-      graphSelectedCourse, 
-      invalidCourse, 
-      aboutOpen, 
-      helpOpen 
+    const {
+      graphInfo,
+      graphCourse,
+      displayedInfoCourse,
+      graphSelectedCourse,
+      invalidCourse,
+      aboutOpen,
+      helpOpen,
+      calendarList,
+      calendarUri
     } = this.state;
 
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
           <div className="App-graph">
-            <Title 
-              onSearch={this.handleSearchSubmit} 
-              graphCourse={graphCourse} 
-              invalidCourse={invalidCourse} 
-              openAboutModal={this.handleAboutClicked} 
+            <Title
+              onSearch={this.handleSearchSubmit}
+              graphCourse={graphCourse}
+              invalidCourse={invalidCourse}
+              openAboutModal={this.handleAboutClicked}
             />
             <GraphContainer
               graphInfo={graphInfo}
@@ -176,12 +188,19 @@ class App extends React.Component<{}, AppState> {
             />
           </div>
           <div className="App-info-pane">
-            <CourseInfoPanel course={displayedInfoCourse} onCourseLinkClick={this.handleLinkClicked} />
+            <CourseInfoPanel 
+              course={displayedInfoCourse} 
+              onCourseLinkClick={this.handleLinkClicked} 
+              calendarUri={calendarUri} 
+            />
           </div>
-          <AboutModal 
-            onClose={this.handleAboutClicked} 
-            open={aboutOpen} 
+          <AboutModal
+            onClose={this.handleAboutClicked}
+            open={aboutOpen}
             onGetStarted={this.handleGetStarted}
+            calendars={calendarList}
+            currentCalendar={calendarUri}
+            onChangeCalendar={this.handleNewCalendar}
           />
           <HelpModal onClose={this.handleHelpClicked} open={helpOpen} />
         </div>
@@ -189,11 +208,25 @@ class App extends React.Component<{}, AppState> {
     );
   }
 
+  async componentDidUpdate(prevProps: any, prevState: AppState) {
+    const { calendarUri } = this.state;
+    if (prevState.calendarUri !== calendarUri && calendarUri) {
+      // Reset App
+      const courseList = await LoadCoursesListJSON(calendarUri);
+      this.setState({
+        courseList: courseList.Courses,
+        graphInfo: undefined,
+        graphCourse: undefined,
+        displayedInfoCourse: undefined,
+        graphSelectedCourse: undefined,
+        invalidCourse: false,
+      });
+    }
+  }
+
   async componentDidMount() {
-    // const calendarList = await LoadCalendarJSON();
-    // this.setState({ calendarList });
-    const courseList = await LoadCoursesListJSON();
-    this.setState({ courseList: courseList.Courses });
+    const calendarList = await LoadCalendarJSON();
+    this.setState({ calendarList, calendarUri: calendarList[0].uri });
 
   }
 }

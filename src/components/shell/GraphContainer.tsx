@@ -94,11 +94,6 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   }
 
   async componentDidUpdate(prevProps: GraphContainerProps, prevState: GraphContainerState) {
-    const { graphInfo } = this.props;
-    if (!graphInfo) {
-      return;
-    }
-
     if (prevProps.graphInfo !== this.props.graphInfo) {
       this.createGraph();
     }
@@ -231,6 +226,12 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   private createGraph = () => {
     const { graphInfo } = this.props;
     if (!graphInfo) {
+      const graph: GraphData = {
+        nodes: [],
+        edges: []
+      };
+
+      this.setState({ graph, validTypes: undefined, displayedTypes: undefined });
       return;
     }
     const idMap: Map<string, number> = new Map<string, number>();

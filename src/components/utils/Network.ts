@@ -2,22 +2,24 @@
 import { GraphInfo, CourseList, Calendars } from "./ServerTypes";
 import Course from "./Course";
 
-export async function LoadCourseHTML(course: Course, calendar?: string) {
+export async function LoadCourseHTML(course: Course, calendar: string) {
     const { fieldOfStudy, courseNum } = course;
-    const html = await fetch(getBasepath("courses" + fieldOfStudy, fieldOfStudy + courseNum + ".html"));
+    const html = await fetch(getBasepath(calendar + "/courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".html"));
     const htmlText = await html.text();
     return htmlText;
 }
 
-export async function LoadCourseJSON(course: Course, calendar?: string) {
+export async function LoadCourseJSON(course: Course, calendar: string) {
     const { fieldOfStudy, courseNum } = course;
-    const response = await fetch(getBasepath("courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".json"));
+    const response = await fetch(
+        getBasepath(calendar + "/courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".json")
+    );
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
     return coursePackage;
 }
 
-export async function LoadCoursesListJSON(calendar?: string) {
-    const response = await fetch(getBasepath("courses", "courses.json"));
+export async function LoadCoursesListJSON(calendar: string) {
+    const response = await fetch(getBasepath(calendar + "/courses", "courses.json"));
     const coursesList = await JSON.parse(await response.text()) as CourseList;
     return coursesList;
 }

@@ -8,6 +8,7 @@ import "./css/CourseInfoPanel.css";
 export interface CourseInfoProps {
     course?: Course;
     onCourseLinkClick: (text: string, link: string) => void;
+    calendarUri?: string;
 }
 
 const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
@@ -29,7 +30,7 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
     }
 
     loadCourse = async () => {
-        const { course } = this.props;
+        const { course, calendarUri } = this.props;
 
         if (!this._iframe) {
             return;
@@ -39,10 +40,10 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
 
         const divs = this._iframe.contentDocument.body.getElementsByTagName("div");
         const div = divs[0];
-
-        if (course) {
+        
+        if (course && calendarUri) {
             try {
-                div.innerHTML = await LoadCourseHTML(course);
+                div.innerHTML = await LoadCourseHTML(course, calendarUri);
             } catch {
                 div.innerHTML = errorHTML;
             }
