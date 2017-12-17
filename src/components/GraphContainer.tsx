@@ -3,7 +3,7 @@ import Graph from "react-graph-vis";
 import { Course, GraphInfo, DependencyTypes } from "./Course";
 import GraphBar from "./GraphBar";
 import { CustomEdge, CustomNode, GraphData, Events } from "./GraphTypes";
-import { Options, Network,  Color } from "vis";
+import { Options, Network, Color } from "vis";
 
 import "./css/GraphContainer.css";
 
@@ -63,7 +63,61 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
   private allEdges: CustomEdge[];
   private allNodes: CustomNode[];
 
-  handleDisplayPreReqs = () => {
+  render() {
+    const { graph, events, validTypes, displayedTypes } = this.state;
+
+    if (graph) {
+      return (
+        <div className="GraphContainer">
+          <GraphBar
+            validTypes={validTypes}
+            displayTypes={displayedTypes}
+            onDisplayPreReqs={this.handleDisplayPreReqs}
+            onDisplayCoReqs={this.handleDisplayCoReqs}
+            onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
+          />
+          <Graph
+            graph={this.state.graph}
+            options={options}
+            events={events}
+            style={{ height: "85vh" }}
+            getNetwork={this.handleGetGraphNetwork}
+          />
+        </div>
+      );
+    } else {
+      return null;
+    }
+  }
+
+  async componentDidUpdate(prevProps: GraphContainerProps, prevState: GraphContainerState) {
+    const { graphInfo } = this.props;
+    if (!graphInfo) {
+      return;
+    }
+
+    if (prevProps.graphInfo !== this.props.graphInfo) {
+      this.createGraph();
+    }
+
+    if (prevState.displayedTypes !== this.state.displayedTypes && prevState.displayedTypes) {
+      this.updateEdges();
+    }
+
+    if (prevProps.onCourseSelect !== this.props.onCourseSelect) {
+      this.setState({ events: this.createEvent() });
+    }
+
+    const { selectedNode } = this.props;
+    if (prevProps.selectedNode !== selectedNode && selectedNode && this.graphNetwork) {
+      const id = this.idLookup.get(selectedNode.name);
+      if (id) {
+        this.graphNetwork.selectNodes([id], true);
+      }
+    }
+  }
+
+  private handleDisplayPreReqs = () => {
     const { displayedTypes } = this.state;
 
     if (displayedTypes) {
@@ -73,7 +127,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     }
   }
 
-  handleDisplayCoReqs = () => {
+  private handleDisplayCoReqs = () => {
     const { displayedTypes } = this.state;
 
     if (displayedTypes) {
@@ -83,7 +137,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     }
   }
 
-  handleDisplayPreCoReqs = () => {
+  private handleDisplayPreCoReqs = () => {
     const { displayedTypes } = this.state;
 
     if (displayedTypes) {
@@ -93,7 +147,11 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     }
   }
 
-  updateEdges = () => {
+  private handleGetGraphNetwork = (network: Network) => {
+    this.graphNetwork = network;
+  }
+
+  private updateEdges = () => {
     const { allEdges, allNodes, nameLookup } = this;
 
     const { displayedTypes } = this.state;
@@ -144,7 +202,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     this.setState({ graph: { nodes, edges } });
   }
 
-  createGraph = () => {
+  private createGraph = () => {
     const { graphInfo } = this.props;
     if (!graphInfo) {
       return;
@@ -244,38 +302,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     this.setState({ graph: { nodes, edges }, events: this.createEvent() });
   }
 
-  async componentDidUpdate(prevProps: GraphContainerProps, prevState: GraphContainerState) {
-    const { graphInfo } = this.props;
-    if (!graphInfo) {
-      return;
-    }
-
-    if (prevProps.graphInfo !== this.props.graphInfo) {
-      this.createGraph();
-    }
-
-    if (prevState.displayedTypes !== this.state.displayedTypes && prevState.displayedTypes) {
-      this.updateEdges();
-    }
-
-    if (prevProps.onCourseSelect !== this.props.onCourseSelect) {
-      this.setState({ events: this.createEvent() });
-    }
-
-    const { selectedNode } = this.props;
-    if (prevProps.selectedNode !== selectedNode && selectedNode && this.graphNetwork) {
-      const id = this.idLookup.get(selectedNode.name);
-      if (id) {
-        this.graphNetwork.selectNodes([id], true);
-      }
-    }
-  }
-
-  componentDidMount() {
-    this.setState({ events: this.createEvent() });
-  }
-
-  createEvent = (): Events => {
+  private createEvent = (): Events => {
     const { onCourseSelect } = this.props;
     const { nameLookup } = this;
     return {
@@ -284,37 +311,6 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
         onCourseSelect(nameLookup.get(id) || "");
       }
     };
-  }
-
-  handleGetGraphNetwork = (network: Network) => {
-    this.graphNetwork = network;
-  }
-
-  render() {
-    const { graph, events, validTypes, displayedTypes } = this.state;
-
-    if (graph) {
-      return (
-        <div className="GraphContainer">
-          <GraphBar
-            validTypes={validTypes}
-            displayTypes={displayedTypes}
-            onDisplayPreReqs={this.handleDisplayPreReqs}
-            onDisplayCoReqs={this.handleDisplayCoReqs}
-            onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
-          />
-          <Graph
-            graph={this.state.graph}
-            options={options}
-            events={events}
-            style={{ height: "85vh" }}
-            getNetwork={this.handleGetGraphNetwork}
-          />
-        </div>
-      );
-    } else {
-      return null;
-    }
   }
 }
 
