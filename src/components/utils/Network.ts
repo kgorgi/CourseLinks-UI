@@ -61,5 +61,9 @@ function createUri(filePath: string, fileName: string) {
         newfilePath = "";
     }
 
+    if (server.lastIndexOf("/") !== server.length - 1) {
+        server = server + "/";
+    }
+
     return server + newPathName + "/" + newfilePath + fileName;
 }
