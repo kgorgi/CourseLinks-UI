@@ -27,3 +27,5 @@ yarn-error.log*
 /.vs/slnx.sqlite
 /.vs/config/applicationhost.config
 /.vs/UvicCourseCalendarUi/v15/.suo
+/courselinks/Data
+/.vs/slnx.sqlite-journal
