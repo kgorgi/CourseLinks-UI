@@ -19,16 +19,19 @@ const iframeUrl = `${process.env.PUBLIC_URL}/infopanel.html`;
 class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps: CourseInfoProps) {
         if (this._iframe) {
-            this._iframe.contentDocument.location.reload();
+            if (prevProps.course !== this.props.course) {
+                this._iframe.contentDocument.location.reload();
+            }
+
         }
     }
 
     handleOnLinkClick = (text?: string, link?: string) => {
         if (text && link) {
             this.props.onCourseLinkClick(text, link);
-        }        
+        }
     }
 
     loadCourse = async () => {
@@ -42,7 +45,7 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
 
         const divs = this._iframe.contentDocument.body.getElementsByTagName("div");
         const div = divs[0];
-        
+
         if (course && calendarUri) {
             try {
                 div.innerHTML = await LoadCourseHTML(course, calendarUri);
