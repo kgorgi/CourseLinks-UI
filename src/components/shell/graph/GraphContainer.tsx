@@ -208,7 +208,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       return;
     }
     
-    let currId = 0;
+    let currId = 1;
 
     let edges: CustomEdge[] = [];
 
@@ -295,7 +295,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
     this.allNodes = nodes;
     this.allEdges = edges;
-    console.log(this.allEdges);
+
     this.setState({ graph: { nodes, edges }, events: this.createEvent() });
     this.clearSelectedNode();
   }

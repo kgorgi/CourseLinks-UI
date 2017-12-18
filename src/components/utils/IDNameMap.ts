@@ -3,10 +3,11 @@ class IdNameMap {
     private _nameLookup: Map<number, string> = new Map<number, string>();
 
     set = (name: string, id: number) => {
-        if (this.has(name) || this.has(id)) {
+        if (this.has(name) && this.has(id)) {
             return false;
+            
         }
-
+        
         this._idLookup.set(name, id);
         this._nameLookup.set(id, name);
         return true;

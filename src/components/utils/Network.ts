@@ -32,7 +32,7 @@ export async function LoadCalendarJSON() {
     return dataObject.available;
 }
 
-const baseOverride = true;
+const baseOverride = false;
 const overrideUrl = "courselinks/data";
 const overrideServer = "http://localhost";
 
