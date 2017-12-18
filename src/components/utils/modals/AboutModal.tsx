@@ -90,33 +90,32 @@ class AboutModal extends React.PureComponent<AboutModalProps> {
                 keepMounted={true}
                 onRequestClose={this.handleCloseModal}
             >
-                <DialogTitle>
+                <DialogTitle style={{ textAlign: "center" }}>
                     <div className="AboutModal-title">
                         Welcome to Course Links Alpha!
                     </div>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        <div className="AboutModal-welcome-text">
-                            Course Links is a web application that shows you the different kind of dependencies
+                    <DialogContentText style={{ textAlign: "center" }}>
+                        Course Links is a web application that shows you the different kind of dependencies
                             between UVic Courses.
                             <br /><br /> <br />
-                            Please note that this software is currently in <b>ALPHA</b>.
+                        Please note that this software is currently in <b>ALPHA</b>.
                             <br /> <br />
-                            <b>Created by Kian Gorgichuk and Amandeep Singh</b>
-                            <br /> <br /> <br />
-
-                            <b>{"Select Academic Calender:"}</b>
-                            <Select
-                                value={selectedCalendar}
-                                onChange={this.handleCalendarChange}
-                                className="AboutModal-calendar-dropdown"
-                                fullWidth={false}
-                            >
-                                {this.generateAvaiableCalendars()}
-                            </Select>
-                        </div>
+                        <b>Created by Kian Gorgichuk and Amandeep Singh</b>
+                        <br /> <br /> <br />
                     </DialogContentText>
+                    <div className="AboutModal-select-container">
+                        <b className="AboutModal-select-text">{"Select Academic Calender:"}</b>
+                        <Select
+                            value={selectedCalendar}
+                            onChange={this.handleCalendarChange}
+                            className="AboutModal-calendar-dropdown"
+                            fullWidth={false}
+                        >
+                            {this.generateAvaiableCalendars()}
+                        </Select>
+                    </div>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={onGetStarted} color="accent">

@@ -38,8 +38,8 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
   private _idNameMap = new IDNameMap();
 
-  private allEdges: CustomEdge[];
-  private allNodes: CustomNode[];
+  private allEdges: CustomEdge[] = [];
+  private allNodes: CustomNode[] = [];
 
   render() {
     const { graph, events, validTypes, displayedTypes } = this.state;
@@ -143,7 +143,6 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       if (showEdge) {
         const toNode = _idNameMap.getName(edge.to as number);
         const fromNode = _idNameMap.getName(edge.from as number);
-
         if (!toNode) {
           console.warn("GraphContainer: UpdateGraph Invalid To Node:", toNode);
           return false;
@@ -296,6 +295,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
 
     this.allNodes = nodes;
     this.allEdges = edges;
+    console.log(this.allEdges);
     this.setState({ graph: { nodes, edges }, events: this.createEvent() });
     this.clearSelectedNode();
   }

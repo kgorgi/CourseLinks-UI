@@ -4,7 +4,9 @@ import Course from "./Course";
 
 export async function LoadCourseHTML(course: Course, calendar: string) {
     const { fieldOfStudy, courseNum } = course;
-    const html = await fetch(getBasepath(calendar + "/courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".html"));
+    const html = await fetch(
+        createUri(calendar + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".html")
+    );
     const htmlText = await html.text();
     return htmlText;
 }
@@ -12,30 +14,31 @@ export async function LoadCourseHTML(course: Course, calendar: string) {
 export async function LoadCourseJSON(course: Course, calendar: string) {
     const { fieldOfStudy, courseNum } = course;
     const response = await fetch(
-        getBasepath(calendar + "/courses/" + fieldOfStudy, fieldOfStudy + courseNum + ".json")
+        createUri(calendar + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".json")
     );
     const coursePackage = await JSON.parse(await response.text()) as GraphInfo;
     return coursePackage;
 }
 
 export async function LoadCoursesListJSON(calendar: string) {
-    const response = await fetch(getBasepath(calendar + "/courses", "courses.json"));
+    const response = await fetch(createUri(calendar + "/RelationsInfo", "courses.json"));
     const coursesList = await JSON.parse(await response.text()) as CourseList;
     return coursesList;
 }
 
 export async function LoadCalendarJSON() {
-    const response = await fetch(getBasepath("", "calendars.json"));
+    const response = await fetch(createUri("", "calendars.json"));
     const dataObject = await JSON.parse(await response.text()) as Calendars;
     return dataObject.available;
 }
 
-const baseOverride = false;
-const overrideUrl = "http://amandeep-laptop/data/RelationsInfo";
+const baseOverride = true;
+const overrideUrl = "courselinks/data";
+const overrideServer = "http://localhost";
 
-function getBasepath(filePath: string, fileName: string) {
+function createUri(filePath: string, fileName: string) {
     // Resolve Hosted Path
-    const server = window.location.origin;
+    let server = window.location.origin;
     const pathname = window.location.pathname;
 
     let newPathName = pathname;
@@ -50,7 +53,13 @@ function getBasepath(filePath: string, fileName: string) {
     // Check Override
     if (baseOverride) {
         newPathName = overrideUrl;
+        server = overrideServer;
     }
 
-    return server + "/" + newPathName + "/" + filePath + "/" + fileName;
+    let newfilePath = filePath + "/";
+    if (!filePath) {
+        newfilePath = "";
+    }
+
+    return server + "/" + newPathName + "/" + newfilePath + fileName;
 }

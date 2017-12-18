@@ -5,10 +5,6 @@ class IdNameMap {
     set = (name: string, id: number) => {
         if (this.has(name) || this.has(id)) {
             return false;
-        } else if (this._idLookup.has(name) || this._nameLookup.has(id)) {
-            // tslint:disable-next-line:no-console
-            console.error("IDNameMap: Set Internal Error");
-            return false;
         }
 
         this._idLookup.set(name, id);
