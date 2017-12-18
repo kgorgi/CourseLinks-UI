@@ -9,6 +9,7 @@ import { createMuiTheme } from "material-ui/styles";
 
 import blue from "material-ui/colors/blue";
 import red from "material-ui/colors/red";
+import lightBlue from "material-ui/colors/lightBlue";
 
 import { GraphInfo, Calendar } from "../utils/types/ServerTypes";
 import Course, { CourseRegex } from "../utils/Course";
@@ -20,7 +21,8 @@ import "./css/App.css";
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue, // Purple and green play nicely together.
+    primary: blue, 
+    secondary: lightBlue,
     error: red,
   },
 });

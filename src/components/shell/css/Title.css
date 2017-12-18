@@ -1,5 +1,5 @@
 .Title {
-    background: #d3d3d3c7;
+    background: rgba(211, 211, 211, 0.78);
     border-bottom: 1px solid black;
     display: flex;
     flex-direction: row;
@@ -36,7 +36,6 @@
     padding: 0.5em;
     width: 15em;
 }
-
 
 .Title-text{
     margin: 0 0.5em;

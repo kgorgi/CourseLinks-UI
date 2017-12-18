@@ -170,19 +170,21 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     // If only one type, overwrite the highlight color
     if (displayedTypes.getCount() === 1) {
       edges = edges.map(value => {
-        if (value.color) {
-          const color = value.color.color;
-          value.color = {
+        const newEdge = Object.assign({}, value);
+        
+        if (newEdge.color) {
+          const color = newEdge.color.color;
+          newEdge.color = {
             color,
             highlight: "orange"
           };
         }
 
-        if (value.id) {
-          value.id = undefined;
+        if (newEdge.id) {
+          newEdge.id = undefined;
         }
 
-        return value;
+        return newEdge;
       });
     }
 
