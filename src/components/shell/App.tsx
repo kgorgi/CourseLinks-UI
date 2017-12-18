@@ -85,6 +85,7 @@ class App extends React.Component<{}, AppState> {
 
     const matches = CourseRegex.exec(courseStr);
     if (!matches) {
+      this.setState({ invalidCourse });
       return;
     }
 
@@ -106,7 +107,6 @@ class App extends React.Component<{}, AppState> {
         }
       }
     }
-
     this.setState({ invalidCourse });
   }
 
