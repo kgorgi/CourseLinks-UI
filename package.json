@@ -15,7 +15,6 @@
   },
   "scripts": {
     "build": "react-scripts-ts build",
-    "eject": "react-scripts-ts eject",
     "start": "react-scripts-ts start",
     "test": "react-scripts-ts test --env=jsdom"
   },

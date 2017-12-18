@@ -2,6 +2,10 @@
 import { GraphInfo, CourseList, Calendars } from "./types/ServerTypes";
 import Course from "./Course";
 
+const baseOverride = false;
+const overrideDataPath = "courselinks/data";
+const overrideServer = "http://localhost";
+
 export async function LoadCourseHTML(course: Course, calendar: string) {
     const { fieldOfStudy, courseNum } = course;
     const html = await fetch(
@@ -32,10 +36,6 @@ export async function LoadCalendarJSON() {
     return dataObject.available;
 }
 
-const baseOverride = false;
-const overrideUrl = "courselinks/data";
-const overrideServer = "http://localhost";
-
 function createUri(filePath: string, fileName: string) {
     // Resolve Hosted Path
     let server = window.location.origin;
@@ -52,7 +52,7 @@ function createUri(filePath: string, fileName: string) {
 
     // Check Override
     if (baseOverride) {
-        newPathName = overrideUrl;
+        newPathName = overrideDataPath;
         server = overrideServer;
     }
 
@@ -61,5 +61,5 @@ function createUri(filePath: string, fileName: string) {
         newfilePath = "";
     }
 
-    return server + "/" + newPathName + "/" + newfilePath + fileName;
+    return server + newPathName + "/" + newfilePath + fileName;
 }

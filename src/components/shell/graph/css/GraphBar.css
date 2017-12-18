@@ -1,5 +1,5 @@
 .GraphBar {
-    background: #d3d3d3a1;
+    background: rgba(211, 211, 211, 0.631);
     border-bottom: 1px solid black;
     display: flex;
     flex-direction: row;

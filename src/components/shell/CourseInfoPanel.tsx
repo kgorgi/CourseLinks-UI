@@ -14,6 +14,8 @@ export interface CourseInfoProps {
 const startHTML = "<h1 class=\"subject-and-number\">No Course Selected</h1>";
 const errorHTML = "<h1 class=\"subject-and-number\">Error Cannot Load Course</h1>";
 
+const iframeUrl = `${process.env.PUBLIC_URL}/infopanel.html`;
+
 class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
 
@@ -53,12 +55,16 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
         }
     }
 
+    handleRefCallback = (iframe: HTMLIFrameElement) => {
+        this._iframe = iframe;
+    }
+
     render() {
         return (
             <div className="CourseInfo-iframe-wrapper">
                 <iframe
-                    ref={ref => this._iframe = ref}
-                    src={"./info.html"}
+                    ref={this.handleRefCallback}
+                    src={iframeUrl}
                     className="CourseInfo-iframe"
                     onLoad={this.loadCourse}
                 />

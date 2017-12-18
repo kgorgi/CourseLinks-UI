@@ -94,7 +94,7 @@ class App extends React.Component<{}, AppState> {
     if (fieldOfStudy && courseNum) {
 
       const id = fieldOfStudy + courseNum;
-      if (this.state.courseList && this.state.courseList.indexOf(id) > 0) {
+      if (this.state.courseList && this.state.courseList.indexOf(id) > -1) {
         const course = new Course(fieldOfStudy, courseNum);
         const { graphCourse } = this.state;
 
