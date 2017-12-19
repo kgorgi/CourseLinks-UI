@@ -232,7 +232,6 @@ class App extends React.Component<{}, AppState> {
   async componentDidMount() {
     const calendarList = await LoadCalendarJSON();
     this.setState({ calendarList, calendarUri: calendarList[0].uri });
-
   }
 }
 

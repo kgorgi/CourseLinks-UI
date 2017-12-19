@@ -18,13 +18,11 @@ const iframeUrl = `${process.env.PUBLIC_URL}/infopanel.html`;
 
 class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
     private _iframe: HTMLIFrameElement | null = null;
+    private _div: HTMLDivElement | null = null;
 
     componentDidUpdate(prevProps: CourseInfoProps) {
-        if (this._iframe) {
-            if (prevProps.course !== this.props.course) {
-                this._iframe.contentDocument.location.reload();
-            }
-
+        if (this._iframe && prevProps.course !== this.props.course) {
+            this.loadCourse();
         }
     }
 
@@ -34,27 +32,42 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
         }
     }
 
-    loadCourse = async () => {
-        const { course, calendarUri } = this.props;
-
+    handleOnLoad = () => {
         if (!this._iframe) {
             return;
         }
+
+        // Add callBack to iframe
         const win: any = this._iframe.contentDocument.defaultView;
         win.onLinkClick = this.handleOnLinkClick;
 
+        // Set div reference
         const divs = this._iframe.contentDocument.body.getElementsByTagName("div");
-        const div = divs[0];
+        if (divs.length > 0) {
+            this._div = divs[0];
+        }
+
+        this.loadCourse();
+    }
+
+    setDivContent = (content: string) => {
+        if (this._div) {
+            this._div.innerHTML = content;
+        }
+
+    }
+
+    loadCourse = async () => {
+        const { course, calendarUri } = this.props;
 
         if (course && calendarUri) {
             try {
-                div.innerHTML = await LoadCourseHTML(course, calendarUri);
+                this.setDivContent(await LoadCourseHTML(course, calendarUri));
             } catch {
-                div.innerHTML = errorHTML;
+                this.setDivContent(errorHTML);
             }
-
         } else {
-            div.innerHTML = startHTML;
+            this.setDivContent(startHTML);
         }
     }
 
@@ -69,7 +82,7 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
                     ref={this.handleRefCallback}
                     src={iframeUrl}
                     className="CourseInfo-iframe"
-                    onLoad={this.loadCourse}
+                    onLoad={this.handleOnLoad}
                 />
             </div>
         );
