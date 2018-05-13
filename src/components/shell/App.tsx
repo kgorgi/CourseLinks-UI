@@ -1,8 +1,10 @@
 import * as React from "react";
 
+// import * as SplitPane from "react-split-pane";
+
 import TitleBar from "./TitleBar";
-import GraphContainer from "./graph/GraphContainer";
-import CourseInfoPanel from "./CourseInfoPanel";
+// import GraphContainer from "./graph/GraphContainer";
+// import CourseInfoPanel from "./CourseInfoPanel";
 
 import { MuiThemeProvider } from "material-ui/styles";
 import { createMuiTheme } from "material-ui/styles";
@@ -21,7 +23,7 @@ import "./css/App.css";
 
 const theme = createMuiTheme({
   palette: {
-    primary: blue, 
+    primary: blue,
     secondary: lightBlue,
     error: red,
   },
@@ -163,10 +165,10 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     const {
-      graphInfo,
+      // graphInfo,
       graphCourse,
-      displayedInfoCourse,
-      graphSelectedCourse,
+      // displayedInfoCourse,
+      // graphSelectedCourse,
       invalidCourse,
       aboutOpen,
       helpOpen,
@@ -177,38 +179,43 @@ class App extends React.Component<{}, AppState> {
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
-          <div className="App-graph">
-            <TitleBar
-              onSearch={this.handleSearchSubmit}
-              graphCourse={graphCourse}
-              invalidCourse={invalidCourse}
-              openAboutModal={this.handleAboutClicked}
-            />
-            <GraphContainer
-              graphInfo={graphInfo}
-              onCourseSelect={this.handleinfoCourseSelect}
-              selectedNode={graphSelectedCourse}
-              onLegendSwitch={this.handleLegendSwitch}
-              onHelpButton={this.handleHelpClicked}
-            />
-          </div>
-          <div className="App-info-pane">
-            <CourseInfoPanel 
-              course={displayedInfoCourse} 
-              onCourseLinkClick={this.handleLinkClicked} 
-              calendarUri={calendarUri} 
-            />
-          </div>
-          <AboutModal
-            onClose={this.handleAboutClicked}
-            open={aboutOpen}
-            onGetStarted={this.handleGetStarted}
-            calendars={calendarList}
-            currentCalendar={calendarUri}
-            onChangeCalendar={this.handleNewCalendar}
+          <TitleBar
+            onSearch={this.handleSearchSubmit}
+            graphCourse={graphCourse}
+            invalidCourse={invalidCourse}
+            openAboutModal={this.handleAboutClicked}
           />
-          <HelpModal onClose={this.handleHelpClicked} open={helpOpen} />
+          {/* <SplitPane split="vertical" minSize={200} defaultSize={300}>
+            <div className="App-graph">
+              <GraphContainer
+                graphInfo={graphInfo}
+                onCourseSelect={this.handleinfoCourseSelect}
+                selectedNode={graphSelectedCourse}
+                onLegendSwitch={this.handleLegendSwitch}
+                onHelpButton={this.handleHelpClicked}
+              />
+            </div>
+            <div className="App-info-pane">
+              <CourseInfoPanel
+                course={displayedInfoCourse}
+                onCourseLinkClick={this.handleLinkClicked}
+                calendarUri={calendarUri}
+              />
+            </div>
+
+          </SplitPane> */}
         </div>
+
+        <AboutModal
+          onClose={this.handleAboutClicked}
+          open={aboutOpen}
+          onGetStarted={this.handleGetStarted}
+          calendars={calendarList}
+          currentCalendar={calendarUri}
+          onChangeCalendar={this.handleNewCalendar}
+        />
+        <HelpModal onClose={this.handleHelpClicked} open={helpOpen} />
+
       </MuiThemeProvider>
     );
   }
