@@ -1,10 +1,8 @@
 import * as React from "react";
 
-// import * as SplitPane from "react-split-pane";
-
 import TitleBar from "./TitleBar";
-// import GraphContainer from "./graph/GraphContainer";
-// import CourseInfoPanel from "./CourseInfoPanel";
+import GraphContainer from "./graph/GraphContainer";
+import CourseInfoPanel from "./CourseInfoPanel";
 
 import { MuiThemeProvider } from "material-ui/styles";
 import { createMuiTheme } from "material-ui/styles";
@@ -20,6 +18,7 @@ import AboutModal from "../utils/modals/AboutModal";
 import HelpModal from "../utils/modals/HelpModal";
 
 import "./css/App.css";
+import "./css/SplitPane.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -165,10 +164,10 @@ class App extends React.Component<{}, AppState> {
 
   render() {
     const {
-      // graphInfo,
+      graphInfo,
       graphCourse,
-      // displayedInfoCourse,
-      // graphSelectedCourse,
+      displayedInfoCourse,
+      graphSelectedCourse,
       invalidCourse,
       aboutOpen,
       helpOpen,
@@ -185,7 +184,8 @@ class App extends React.Component<{}, AppState> {
             invalidCourse={invalidCourse}
             openAboutModal={this.handleAboutClicked}
           />
-          {/* <SplitPane split="vertical" minSize={200} defaultSize={300}>
+
+          <div className="App-main">
             <div className="App-graph">
               <GraphContainer
                 graphInfo={graphInfo}
@@ -194,6 +194,7 @@ class App extends React.Component<{}, AppState> {
                 onLegendSwitch={this.handleLegendSwitch}
                 onHelpButton={this.handleHelpClicked}
               />
+
             </div>
             <div className="App-info-pane">
               <CourseInfoPanel
@@ -202,8 +203,8 @@ class App extends React.Component<{}, AppState> {
                 calendarUri={calendarUri}
               />
             </div>
+          </div>
 
-          </SplitPane> */}
         </div>
 
         <AboutModal

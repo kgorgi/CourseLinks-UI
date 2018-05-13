@@ -58,7 +58,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
           graph={this.state.graph}
           options={GraphOptions}
           events={events}
-          style={{ height: "85vh" }}
+          style={{ height: "86vh" }}
           getNetwork={this.handleGetGraphNetwork}
         />}
       </div>
