@@ -2,12 +2,13 @@
     background: rgba(211, 211, 211, 0.631);
     border-bottom: 1px solid black;
     display: flex;
-    flex-direction: row;
     justify-content: center;
     align-content: center;
     padding: 0 0.5em;
     height: 3em;
+    flex: none;
 }
+
 .Legend-text {
     padding-right: 0.5em;
     font-family: inherit;
@@ -40,7 +41,6 @@
 .GraphBar-arrow-blue, 
 .GraphBar-arrow-red,
 .GraphBar-arrow-orange {
-    font: bold;
     font-size: 3em;
     font-weight: 900;
 }

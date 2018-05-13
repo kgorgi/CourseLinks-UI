@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import Checkbox from "material-ui/Checkbox";
-import Button from "material-ui/Button";
+// import Button from "material-ui/Button";
 
 import DependencyTypes from "../../utils/types/DependencyTypes";
 
@@ -95,15 +95,15 @@ class GraphBar extends React.Component<GraphBarProps> {
     }
 
     render() {
-        const { onHelpButton } = this.props;
+        // const { onHelpButton } = this.props;
         return (
             <div className="GraphBar" >
                 <div className="GraphBar-legend">
                     {this.renderLegend()}
                 </div>
-                <Button raised={true} color="primary" className="GraphBar-help-button" onClick={onHelpButton}>
+                {/* <Button raised={true} color="primary" className="GraphBar-help-button" onClick={onHelpButton}>
                     Reset Graph
-                </Button>
+                </Button> */}
             </div >
         );
     }

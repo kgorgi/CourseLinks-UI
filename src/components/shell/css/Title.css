@@ -39,6 +39,7 @@
 .Title-error {
     padding: 0 1em;
     font-family: inherit;
+    width: 7em;
 }
 
 .Title-help-button-wrapper {

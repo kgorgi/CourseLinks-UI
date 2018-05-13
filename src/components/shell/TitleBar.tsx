@@ -64,11 +64,9 @@ class Titlebar extends React.Component<TitleBarProps, TitleBarState> {
                         <SearchIcon onClick={this.handleSearch} />
                     </IconButton>
 
-                    {invalidCourse &&
                         <h4 className="Title-error">
-                            Invalid Course
+                            {invalidCourse ? "Invalid Course" : ""}
                         </h4>
-                    }
                 </div>
                 <div className="Title-help-button-wrapper">
                     <Button

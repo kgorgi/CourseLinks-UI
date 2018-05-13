@@ -54,12 +54,14 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
           onDisplayPreCoReqs={this.handleDisplayPreCoReqs}
           onHelpButton={onHelpButton}
         />
-        {graph && <Graph
-          graph={this.state.graph}
-          options={GraphOptions}
-          events={events}
-          getNetwork={this.handleGetGraphNetwork}
-        />}
+        <div className="GraphContainer-graph">
+          {graph && <Graph
+            graph={this.state.graph}
+            options={GraphOptions}
+            events={events}
+            getNetwork={this.handleGetGraphNetwork}
+          />}
+        </div>
       </div>
     );
   }
@@ -169,7 +171,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     if (displayedTypes.getCount() === 1) {
       edges = edges.map(value => {
         const newEdge = Object.assign({}, value);
-        
+
         if (newEdge.color) {
           const color = newEdge.color.color;
           newEdge.color = {
@@ -206,14 +208,14 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
       this.setState({ graph, validTypes: undefined, displayedTypes: undefined });
       return;
     }
-    
+
     let currId = 1;
 
     let edges: CustomEdge[] = [];
 
     const validTypes = new DependencyTypes(false, false, false);
 
-    const  {_idNameMap } = this;
+    const { _idNameMap } = this;
     _idNameMap.clear();
 
     for (const link of graphInfo.RelationsList) {
