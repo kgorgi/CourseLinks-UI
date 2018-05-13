@@ -102,7 +102,7 @@ class GraphBar extends React.Component<GraphBarProps> {
                     {this.renderLegend()}
                 </div>
                 <Button raised={true} color="primary" className="GraphBar-help-button" onClick={onHelpButton}>
-                    Help
+                    Reset Graph
                 </Button>
             </div >
         );

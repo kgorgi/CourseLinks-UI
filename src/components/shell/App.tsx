@@ -18,7 +18,6 @@ import AboutModal from "../utils/modals/AboutModal";
 import HelpModal from "../utils/modals/HelpModal";
 
 import "./css/App.css";
-import "./css/SplitPane.css";
 
 const theme = createMuiTheme({
   palette: {

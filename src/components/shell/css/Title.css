@@ -14,8 +14,9 @@
     vertical-align: middle;
     line-height: 2em;
     font-size: 1.5em; 
-    font-family: bold;
-    width: 6em;
+    width: 9em;
+    font-family: inherit;
+    font-weight: 500;
 }
 
 .Title-middle {
@@ -37,6 +38,7 @@
 
 .Title-error {
     padding: 0 1em;
+    font-family: inherit;
 }
 
 .Title-help-button-wrapper {

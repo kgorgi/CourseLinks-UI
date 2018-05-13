@@ -46,7 +46,7 @@ class Titlebar extends React.Component<TitleBarProps, TitleBarState> {
         const { invalidCourse, openAboutModal } = this.props;
         return (
             <div className="Title">
-                <span className="Title-name">Course Links</span>
+                <span className="Title-name">Course Links Beta</span>
                 <div className="Title-middle">
                     <form className="Title-search-box" onSubmit={this.handleSearch}>
                         <Input
