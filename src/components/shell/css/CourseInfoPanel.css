@@ -1,9 +1,0 @@
-.CourseInfo-iframe-wrapper {
-    display: flex;
-    height: 100%;
-}
-.CourseInfo-iframe {
-    flex: 1;
-    border: none;
-    height: 100%;
-}
