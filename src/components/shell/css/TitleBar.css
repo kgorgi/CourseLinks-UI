@@ -58,3 +58,14 @@
 }
 
 
+.TitleBar-errorMessage {
+    display: flex;
+    align-items: center;  
+}
+
+.TitleBar-errorIcon {
+    font-size: 20;
+    margin-right: 1em;
+}
+
+
