@@ -1,4 +1,5 @@
 import * as React from "react";
+import SplitPane from "react-split-pane";
 
 import TitleBar from "./TitleBar";
 import GraphContainer from "./graph/GraphContainer";
@@ -18,6 +19,7 @@ import AboutModal from "../utils/modals/AboutModal";
 import HelpModal from "../utils/modals/HelpModal";
 
 import "./css/App.css";
+import "./css/SplitPane.css";
 
 const theme = createMuiTheme({
   palette: {
@@ -57,13 +59,16 @@ interface AppState {
 
   /** Controls if the help modal is open */
   helpOpen: boolean;
+
+  isDragging: boolean;
 }
 
 class App extends React.Component<{}, AppState> {
   state: AppState = {
     invalidCourse: false,
     aboutOpen: true,
-    helpOpen: false
+    helpOpen: false,
+    isDragging: false,
   };
 
   loadNewGraph = async (course: Course) => {
@@ -161,6 +166,14 @@ class App extends React.Component<{}, AppState> {
     this.setState({ calendarUri });
   }
 
+  handleSplitPaneDragStart = () => {
+    this.setState({ isDragging: true });
+  }
+
+  handleSplitPaneDragEnd = () => {
+    this.setState({ isDragging: false });
+  }
+
   render() {
     const {
       graphInfo,
@@ -171,9 +184,11 @@ class App extends React.Component<{}, AppState> {
       aboutOpen,
       helpOpen,
       calendarList,
-      calendarUri
+      calendarUri,
+      isDragging
     } = this.state;
 
+    const hSize = window.innerWidth;
     return (
       <MuiThemeProvider theme={theme}>
         <div className="App">
@@ -185,23 +200,35 @@ class App extends React.Component<{}, AppState> {
           />
 
           <div className="App-main">
-            <div className="App-graph">
-              <GraphContainer
-                graphInfo={graphInfo}
-                onCourseSelect={this.handleinfoCourseSelect}
-                selectedNode={graphSelectedCourse}
-                onLegendSwitch={this.handleLegendSwitch}
-                onHelpButton={this.handleHelpClicked}
-              />
+            <SplitPane
+              split="vertical"
+              primary="second"
+              minSize={hSize * 0.2}
+              defaultSize={hSize * 0.3}
+              maxSize={hSize * 0.5}
+              onDragStarted={this.handleSplitPaneDragStart}
+              onDragFinished={this.handleSplitPaneDragEnd}
+            >
+              <div className="App-graph">
+                <GraphContainer
+                  graphInfo={graphInfo}
+                  onCourseSelect={this.handleinfoCourseSelect}
+                  selectedNode={graphSelectedCourse}
+                  onLegendSwitch={this.handleLegendSwitch}
+                  onHelpButton={this.handleHelpClicked}
+                />
+              </div>
+              <div className="App-info-pane">
+                {isDragging ? "" :
+                  <CourseInfoPanel
+                    course={displayedInfoCourse}
+                    onCourseLinkClick={this.handleLinkClicked}
+                    calendarUri={calendarUri}
+                  />
+                }
 
-            </div>
-            <div className="App-info-pane">
-              <CourseInfoPanel
-                course={displayedInfoCourse}
-                onCourseLinkClick={this.handleLinkClicked}
-                calendarUri={calendarUri}
-              />
-            </div>
+              </div>
+            </SplitPane>
           </div>
 
         </div>

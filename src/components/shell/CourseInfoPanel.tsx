@@ -77,14 +77,12 @@ class CourseInfoPanel extends React.PureComponent<CourseInfoProps> {
 
     render() {
         return (
-            <div className="CourseInfo-iframe-wrapper">
-                <iframe
-                    ref={this.handleRefCallback}
-                    src={iframeUrl}
-                    className="CourseInfo-iframe"
-                    onLoad={this.handleOnLoad}
-                />
-            </div>
+            <iframe
+                ref={this.handleRefCallback}
+                src={iframeUrl}
+                className="CourseInfo-iframe"
+                onLoad={this.handleOnLoad}
+            />
         );
     }
 

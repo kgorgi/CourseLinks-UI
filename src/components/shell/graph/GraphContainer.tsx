@@ -46,6 +46,7 @@ class GraphContainer extends React.Component<GraphContainerProps, GraphContainer
     const { onHelpButton } = this.props;
     return (
       <div className="GraphContainer">
+      
         <GraphBar
           validTypes={validTypes}
           displayTypes={displayedTypes}

@@ -17,6 +17,6 @@
 }
 
 .App-info-pane {
-   width: 25em;
-   border-left: 2px solid black;
+  display: flex;
+  height: 100%;
 }
