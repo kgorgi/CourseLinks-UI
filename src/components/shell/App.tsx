@@ -13,10 +13,14 @@ class App extends React.Component {
     return (
       <div className="App">
         <CssBaseline />
-        <TitleBar />
+        <TitleBar onCourseSearch={this.handleSearchCourse}/>
         <CourseView />
       </div>
     );
+  }
+
+  private handleSearchCourse (searchText: string){
+    return;
   }
 }
 
