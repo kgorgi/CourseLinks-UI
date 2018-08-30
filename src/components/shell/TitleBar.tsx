@@ -1,8 +1,14 @@
 import * as React from 'react';
 
 import Button from '@material-ui/core/Button';
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
+
+import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
+import SnackbarContent from '@material-ui/core/SnackbarContent';
+
 import TextField from '@material-ui/core/TextField';
 
 import { CourseRegex } from "../utils/Course";
@@ -32,8 +38,9 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
     };
 
     public render() {
+        const { courseList } = this.props;
         const { invalidCourse, searchText, errorMessageVisible } = this.state;
-
+        
         return (
             <div className="TitleBar">
                 <div className="TitleBar-name"> Course Links </div>
@@ -45,11 +52,14 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                             value={searchText}
                             error={invalidCourse}
                             onChange={this.handleUserInput}
+                            onKeyPress={this.handleKeyPress}
+                            disabled={!courseList}          
                         />
                     </div>
                     <Button 
                         variant="contained"
                         onClick={this.handleUserSearch}
+                        disabled={!courseList}
                     >
                         Search
                     </Button>
@@ -68,21 +78,39 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                     open={errorMessageVisible}
                     onClose={this.handleErrorClose}
                     TransitionComponent={errorSlide}
-                    message={<span>Invalid Course!</span>}
-                />                            
+                >
+                    <SnackbarContent
+                        message={
+                            <div className="TitleBar-errorMessage">
+                                <ErrorIcon className="TitleBar-errorIcon" />
+                                Invalid Course!
+                            </div>
+                        }
+                        action={[
+                            <IconButton
+                                key="close"
+                                color="inherit"
+                                onClick={this.handleErrorClose}
+                            >
+                                <CloseIcon />
+                            </IconButton>,
+                        ]}
+                        />
+                </Snackbar>                            
             </div>
         );
     }
 
     private handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchText = event.target.value;
+        this.setState( { invalidCourse: false, searchText} );  
+    }
 
-        if (searchText.endsWith("\n")){
+    private handleKeyPress = (event: React.KeyboardEvent) => {
+        if (event.key === 'Enter'){
             this.handleUserSearch();
-        } else {
-            this.setState( { invalidCourse: false, searchText} );
+            event.preventDefault();
         }
-        
     }
 
     private handleUserSearch = () => {
@@ -96,13 +124,13 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
 
             if (fieldOfStudy && courseNum) {
                 const id = fieldOfStudy + courseNum;
-                const { courseList, onCourseSearch } = this.props;
+                const { courseList } = this.props;
                 
                 if (courseList && courseList.indexOf(id) > -1) {
-                    onCourseSearch(id);
+                    this.props.onCourseSearch(id);
+                    return;
                 }
             }
-
         }
         
         this.setState({ invalidCourse: true, errorMessageVisible: true });
