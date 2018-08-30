@@ -2,6 +2,10 @@
     height: calc( 100% - 4em )
 }
 
+.CourseView-Graph {
+    height: 100%;
+}
+
 .Resizer {
     background: #000;
     opacity: .2;

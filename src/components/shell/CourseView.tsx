@@ -1,6 +1,10 @@
 import * as React from "react";
 import SplitPane from "react-split-pane";
 
+import GraphContainer from "./GraphContainer";
+import GraphLegend from "./GraphLegend";
+import SelectedCourseInfo from "./SelectedCourseInfo";
+
 import './css/CourseView.css';
 
 class CourseView extends React.Component {
@@ -18,12 +22,13 @@ class CourseView extends React.Component {
                     }}
                     className="CourseView-splitPane"
                 >
-                    <div />
-                    <div />
+                    <div className="CourseView-Graph">
+                        <GraphLegend />
+                        <GraphContainer />
+                    </div>
+                    <SelectedCourseInfo />
                 </SplitPane>
-
             </div>
-
         );
     }
 }

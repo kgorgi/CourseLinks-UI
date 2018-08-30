@@ -1,7 +1,7 @@
-import * as React from "react";
+import * as React from 'react';
 
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 
 import "./css/TitleBar.css";
 
