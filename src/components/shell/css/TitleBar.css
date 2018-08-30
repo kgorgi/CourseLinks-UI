@@ -1,0 +1,60 @@
+.TitleBar {
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: row;   
+    justify-content: center;
+    align-content: center;
+    padding: 0.75em 2em;
+    height: 4em;
+}
+
+.TitleBar-name {
+    display: flex;
+    align-items: center;
+    justify-content: left;
+    flex-grow: 1;  
+    font-size: 2.5em;
+    font-family: bold;
+    color:  #e0e0e0;
+}
+
+.TitleBar-search {
+    display: flex;
+    flex-grow: 1;
+    justify-content: center; 
+}
+
+.TitleBar-searchBox {
+    display: flex;
+    align-items: center;
+    background-color: #eeeeee;
+    border-radius: 0.3em;
+    padding: 0 0.5em;
+    width: 20em;
+    margin: 0 1em;
+}
+
+.TitleBar-searchInput {
+    width: 20em;
+}
+
+.TitleBar-calendar{
+    display: flex;
+    flex-grow: 1;
+}
+
+.TitleBar-calendarName{
+    font-size: 2em;
+    font-family: bold;
+    color:  #e0e0e0;
+    margin: 0 1em;
+}
+
+.TitleBar-buttonsWrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    flex-grow: 1;
+}
+
+

@@ -1,9 +1,19 @@
 import * as React from 'react';
-import './App.css';
+
+import CssBaseline from '@material-ui/core/CssBaseline';
+
+import TitleBar from "./TitleBar";
+
+import './css/App.css';
 
 class App extends React.Component {
   public render() {
-    return (<div className="App" />);
+    return (
+      <React.Fragment>
+        <CssBaseline />
+        <TitleBar />
+      </React.Fragment>
+    );
   }
 }
 
