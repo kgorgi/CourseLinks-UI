@@ -2,17 +2,20 @@ import * as React from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import CourseView from './CourseView';
 import TitleBar from "./TitleBar";
 
 import './css/App.css';
 
+
 class App extends React.Component {
   public render() {
     return (
-      <React.Fragment>
+      <div className="App">
         <CssBaseline />
         <TitleBar />
-      </React.Fragment>
+        <CourseView />
+      </div>
     );
   }
 }
