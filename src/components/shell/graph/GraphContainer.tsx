@@ -8,7 +8,7 @@ import IdNameMap from "../../utils/graph/IdNameMap";
 import Network from "../../utils/Network";
 import { IGraphInfo } from "../../utils/types/ServerTypes";
 
-import GraphOptions from "./GraphOptions";
+import GraphOptions from "../../utils/graph/GraphOptions";
 
 import { IEvents, IGraphData } from "../../utils/types/GraphTypes";
 
