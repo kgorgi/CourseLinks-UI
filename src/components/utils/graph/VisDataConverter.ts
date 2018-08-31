@@ -58,7 +58,7 @@ class VisDataConverter {
       
             if (typeof id === "number") {
               const color: Color = {
-                background: "#D2E5FF",
+                background: this.getRandomColor(),
                 highlight: "orange"
               };
       
@@ -85,6 +85,20 @@ class VisDataConverter {
         }
 
         return graphData;
+    }
+
+    private getRandomColor = () => {
+      const num = Math.random() * 12;
+
+      if (num <= 2) {
+        return "#F9CC9B";
+      } else if (num <= 5) {
+        return "#FDDD9B";
+      } else if(num <= 8) {
+        return "#C4D08B";
+      } else{
+        return "#8CB6C1";
+      }
     }
 }
 

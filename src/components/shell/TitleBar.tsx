@@ -1,6 +1,7 @@
 import * as React from 'react';
 
 import Course, { CourseRegex } from "../utils/Course";
+import Logo from "./Logo";
 
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
@@ -43,6 +44,7 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
         
         return (
             <div className="TitleBar">
+                <Logo />
                 <div className="TitleBar-name"> Course Links </div>
                 <div className="TitleBar-search">
                     <div className="TitleBar-searchBox">
