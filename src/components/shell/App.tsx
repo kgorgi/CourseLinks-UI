@@ -3,22 +3,22 @@ import * as React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Course from "../utils/Course";
-import { LoadCalendarJSON, LoadCoursesListJSON } from "../utils/Network";
+import Network from "../utils/Network";
 import { ICalendar } from "../utils/types/ServerTypes";
 
-import CourseView from './CourseView';
+import CoursesView from './CoursesView';
 import TitleBar from "./TitleBar";
 
 import './css/App.css';
 
 interface IAppState {
-  currentCourse?: Course;
+  searchedCourse?: Course;
   
-  /** The current list of calendars */
+  /** The current list of all available calendars */
   calendarList?: ICalendar[];
 
   /** The current calendar */
-  calendarUri?: string;
+  calendar?: ICalendar;
 
   /** The list of currently available courses */
   courseList?: string[];
@@ -29,7 +29,7 @@ class App extends React.Component<any, IAppState> {
   public state: IAppState = {};
 
   public render() {   
-    const { calendarUri, currentCourse } = this.state;
+    const { searchedCourse } = this.state;
 
     return (
       <div className="App">
@@ -38,25 +38,25 @@ class App extends React.Component<any, IAppState> {
           courseList={this.state.courseList } 
           onCourseSearch={this.handleSearchCourse}
         />
-        <CourseView 
-          calendarUri={calendarUri}
-          searchedCourse={currentCourse}
-          />
+        <CoursesView searchedCourse={searchedCourse} />
       </div>
     );
   }
 
   public async componentDidMount() {
-    const calendarList = await LoadCalendarJSON();
-    this.setState({ calendarList, calendarUri: calendarList[0].uri });
+    const calendarList = await Network.LoadCalendarJSON();
+    this.setState({ calendarList, calendar: calendarList[0] });
   }
 
   public async componentDidUpdate(prevProps: any, prevState: IAppState) {
-    const { calendarUri } = this.state;
-    if (prevState.calendarUri !== calendarUri && calendarUri) {
+    const { calendar } = this.state;
+    
+    if (prevState.calendar !== calendar && calendar) {    
+      Network.SetCalendarUri(calendar.uri);
       
       // Reset App
-      const courseList = await LoadCoursesListJSON(calendarUri);
+      const courseList = await Network.LoadCoursesListJSON();
+    
       this.setState({
         courseList: courseList.Courses,       
       });
@@ -64,10 +64,10 @@ class App extends React.Component<any, IAppState> {
   }
 
   public handleSearchCourse = (newCourse: Course) => {
-    const { currentCourse } = this.state;
+    const { searchedCourse } = this.state;
 
-    if(!currentCourse || !newCourse.equals(currentCourse)){
-      this.setState( {currentCourse: newCourse} );
+    if(!searchedCourse || !newCourse.equals(searchedCourse)){
+      this.setState( {searchedCourse: newCourse} );
     }
   }
 }

@@ -1,18 +1,15 @@
 import * as React from "react";
 import SplitPane from "react-split-pane";
 
-import Course from "../utils/Course";
+import Course, { CourseRegex }  from "../utils/Course";
 import GraphContainer from "./graph/GraphContainer";
 import GraphLegend from "./graph/GraphLegend";
 import SelectedCourseInfo from "./SelectedCourseInfo";
-
-import { CourseRegex } from "../utils/Course";
 
 import './css/CourseView.css';
 
 interface ICourseViewProps {
     searchedCourse?: Course;
-    calendarUri?: string;
 }
 
 interface ICourseViewState {
@@ -20,13 +17,13 @@ interface ICourseViewState {
     isResizing: boolean;
 }
 
-class CourseView extends React.Component<ICourseViewProps, ICourseViewState> { 
+class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> { 
     public state: ICourseViewState = {
         isResizing: false,
     }
     
     public render() {
-        const { searchedCourse, calendarUri } = this.props;
+        const { searchedCourse } = this.props;
         const { selectedCourse, isResizing } = this.state;
 
         return (
@@ -46,17 +43,27 @@ class CourseView extends React.Component<ICourseViewProps, ICourseViewState> {
                 >
                     <div className="CourseView-Graph">
                         <GraphLegend />
-                        <GraphContainer />
+                        <GraphContainer 
+                            searchedCourse={searchedCourse}
+                            selectedCourse={selectedCourse}
+                            onCourseSelect={this.handleGraphCourseSelect}
+                            isResizing={isResizing}
+                        />
                     </div>
                     <SelectedCourseInfo
                         onCourseLinkClick={this.handleCourseLinkClick} 
-                        calendarUri={calendarUri}
                         course={!!selectedCourse ? selectedCourse : searchedCourse}
                         isResizing={isResizing}  
                     />
                 </SplitPane>
             </div>
         );
+    }
+
+    public componentDidUpdate(prevProps: ICourseViewProps, prevState: ICourseViewState){
+        if (prevProps.searchedCourse !== this.props.searchedCourse){
+            this.setState( { selectedCourse: undefined });
+        }
     }
 
     private handleCourseLinkClick = (text: string, link: string) => {
@@ -69,6 +76,11 @@ class CourseView extends React.Component<ICourseViewProps, ICourseViewState> {
             window.open(link);
         }
     }
+
+    private handleGraphCourseSelect = (courseName: string) => {
+        const selectedCourse = new Course(courseName);
+        this.setState({ selectedCourse });
+    }
     
     private handleOnDragStart = () => {
         this.setState( {isResizing: true} );
@@ -79,4 +91,4 @@ class CourseView extends React.Component<ICourseViewProps, ICourseViewState> {
     }
 }
 
-export default CourseView;
+export default CoursesView;

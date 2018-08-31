@@ -1,14 +1,13 @@
 import * as React from "react";
 
 import Course from "../utils/Course";
-import { LoadCourseHTML } from "../utils/Network";
+import Network from "../utils/Network";
 
 import "./css/SelectedCourseInfo.css";
 
 export interface ISelectCourseInfoProps {
     course?: Course;
     onCourseLinkClick: (text: string, link: string) => void;
-    calendarUri?: string;
     isResizing: boolean;
 }
 
@@ -79,11 +78,11 @@ class CourseInfoPanel extends React.PureComponent<ISelectCourseInfoProps> {
     }
 
     private loadCourse = async () => {
-        const { course, calendarUri } = this.props;
+        const { course } = this.props;
 
-        if (course && calendarUri) {
+        if (course) {
             try {
-                this.setDivContent(await LoadCourseHTML(course, calendarUri));
+                this.setDivContent(await Network.LoadCourseHTML(course));
             } catch {
                 this.setDivContent(errorHTML);
             }
