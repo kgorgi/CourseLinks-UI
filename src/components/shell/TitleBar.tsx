@@ -1,19 +1,17 @@
 import * as React from 'react';
 
+import Course, { CourseRegex } from "../utils/Course";
+
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-import Course from "../utils/Course";
-
-import ErrorIcon from '@material-ui/icons/Error';
-
 import IconButton from '@material-ui/core/IconButton';
 import Slide from '@material-ui/core/Slide';
 import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
-
 import TextField from '@material-ui/core/TextField';
 
-import { CourseRegex } from "../utils/Course";
+import CloseIcon from '@material-ui/icons/Close';
+import ErrorIcon from '@material-ui/icons/Error';
+
 import "./css/TitleBar.css";
 
 const errorSlide: React.StatelessComponent = (props: any) => {
@@ -50,7 +48,7 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                     <div className="TitleBar-searchBox">
                         <TextField 
                             className="TitleBar-searchInput"
-                            placeholder="Enter a course" 
+                            placeholder="Enter a course (SENG 265)" 
                             value={searchText}
                             error={invalidCourse}
                             onChange={this.handleUserInput}
