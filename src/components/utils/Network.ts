@@ -1,5 +1,5 @@
 import Course from "./Course";
-import { ICalendars, ICourseList, IGraphInfo, } from "./types/ServerTypes";
+import { ICalendars, ICourseList, IGraphInfo, } from "./ServerTypes";
 
 const baseOverride = true;
 const overrideDataPath = "courselinks/data";

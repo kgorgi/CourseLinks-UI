@@ -4,7 +4,7 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 import Course from "../utils/Course";
 import Network from "../utils/Network";
-import { ICalendar } from "../utils/types/ServerTypes";
+import { ICalendar } from "../utils/ServerTypes";
 
 import CoursesView from './CoursesView';
 import TitleBar from "./TitleBar";

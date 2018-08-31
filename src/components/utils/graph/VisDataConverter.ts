@@ -2,8 +2,8 @@ import { Color } from "vis";
 
 import IdNameMap from "./IdNameMap";
 
-import { ICustomEdge, ICustomNode, IGraphData } from "../types/GraphTypes";
-import { IGraphInfo } from "../types/ServerTypes";
+import { ICustomEdge, ICustomNode, IGraphData } from "react-graph-vis";
+import { IGraphInfo } from "../ServerTypes";
 
 import { ShadowOptions } from "./GraphOptions";
 

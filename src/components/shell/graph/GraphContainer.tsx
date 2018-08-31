@@ -1,16 +1,14 @@
 import * as React from 'react';
 
-import Graph from "react-graph-vis";
+import Graph, { IEvents, IGraphData } from "react-graph-vis";
 import { Network as VisGraph } from "vis";
 
 import Course from "../../utils/Course";
 import IdNameMap from "../../utils/graph/IdNameMap";
 import Network from "../../utils/Network";
-import { IGraphInfo } from "../../utils/types/ServerTypes";
+import { IGraphInfo } from "../../utils/ServerTypes";
 
 import GraphOptions from "../../utils/graph/GraphOptions";
-
-import { IEvents, IGraphData } from "../../utils/types/GraphTypes";
 
 import VisDataConverter from '../../utils/graph/VisDataConverter';
 
@@ -42,7 +40,7 @@ class GraphContainer extends React.Component<IGraphContainerProps, IGraphContain
         if (graphData && !isResizing){
             return (
                 <Graph
-                    graph={this.state.graphData}
+                    graph={graphData}
                     options={GraphOptions}
                     events={events}
                     style={{ height: "calc(100% - 3.5em)" }}
