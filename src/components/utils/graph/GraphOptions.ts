@@ -1,13 +1,24 @@
 import { Options } from "vis";
 
+
+export const ShadowOptions = {
+    color: "rgba(0,0,0,0.6)",
+    enabled: true,
+    size: 10,
+    x: 5,
+    y: 5
+};
+
 const options: Options = {
     edges: {
+        shadow: ShadowOptions,
         smooth: {
             enabled: true,
             forceDirection: "vertical",
             roundness: 0.5,
             type: "cubicBezier",              
-        }
+        },
+        
     },
     interaction: {
         dragNodes: false

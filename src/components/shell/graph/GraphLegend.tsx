@@ -16,7 +16,7 @@ class GraphLegend extends React.Component {
                         length={40}
                         lineWidth={2}
                         style={{
-                            width: '70px'
+                            width: '65px'
                           }}
                     />
                 </div>
@@ -29,7 +29,7 @@ class GraphLegend extends React.Component {
                         length={40}
                         lineWidth={2}
                         style={{
-                            width: '70px'
+                            width: '65px'
                           }}
                     />
                 </div>
@@ -42,7 +42,7 @@ class GraphLegend extends React.Component {
                         length={40}
                         lineWidth={2}
                         style={{
-                            width: '70px'
+                            width: '65px'
                           }}
                     />
                 </div>

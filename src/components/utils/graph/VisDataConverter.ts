@@ -5,6 +5,8 @@ import IdNameMap from "./IdNameMap";
 import { ICustomEdge, ICustomNode, IGraphData } from "../types/GraphTypes";
 import { IGraphInfo } from "../types/ServerTypes";
 
+import { ShadowOptions } from "./GraphOptions";
+
 class VisDataConverter {
 
     private nodes: ICustomNode[]  = [];
@@ -66,7 +68,8 @@ class VisDataConverter {
                 color,
                 id,
                 label: key,          
-                level
+                level,
+                shadow: ShadowOptions
               });
             } else {
               console.warn("GraphContainer: Invalid Key:", key);
