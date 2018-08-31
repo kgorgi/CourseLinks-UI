@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Course Info</title>
+    <style>
+        #content #content-main h1.subject-and-number {
+            color: #002754;
+            clear: both;
+            font-size: 2.5em;
+            font-weight: 600;
+            margin: .2em 0;
+        }
+        #content #content-main h2.course-title {
+            color: #002754;
+            clear: both;
+            font-weight: normal;
+            margin: .45em 0;
+        }
+        #content #content-main h3.units {
+            color: #002754;
+            clear: both;
+            font-weight: 400;
+            font-size: 1.3em;
+            margin: .3em 0;
+            text-indent: 0px;
+            display: inline-block;
+        }
+        #content #content-main h3.hours {
+            color: #002754;
+            clear: both;
+            font-weight: 400;
+            font-size: 1.3em;
+            margin: .3em 0;
+            text-indent: 0px;
+            text-align: left;
+            display: inline-block;
+            margin-left: 1em;
+        }
+        #content #content-main h3.also {
+            color: #002754;
+            clear: both;
+            font-weight: 400;
+            font-size: 1.3em;
+            margin: .3em 0;
+        }
+        #content #content-main h3.formerly {
+            color: #002754;
+            clear: both;
+            font-size: 1.3em;
+            font-weight: 400;
+            margin: .3em 0;
+        }
+        #content #content-main p.note-header {
+            font-weight: bold;
+            margin-bottom: .3em;
+        }
+        #content #content-main ul {
+            list-style: square outside none;
+            padding: 0 0 0 2em;
+            margin-left: 0;
+        }
+        #content #content-main ul li {
+            margin: .1em 0;
+        }
+        a {
+            text-decoration: none;
+        }
+        a:link {
+            color: #004C84;
+        }
+        a:link:hover {
+            color: #C63527;
+        }
+        a:visited {
+            color: #4D87B3;
+        }
+        a:visited:hover {
+            color: #C63527;
+        }
+        header,
+        section,
+        footer,
+        aside,
+        nav,
+        main,
+        article,
+        figure {
+            display: block;
+        }
+        h1 a,
+        h2 a,
+        h3 a,
+        h4 a,
+        h5 a {
+            text-decoration: none;
+        }
+        h1 a:hover,
+        h2 a:hover,
+        h3 a:hover,
+        h4 a:hover,
+        h5 a:hover {
+            text-decoration: none;
+        }
+        h1,
+        h2,
+        h3,
+        h4,
+        h5 {
+            text-decoration: none;
+            font-family: 'OpenSansRegular', 'Arial', sans-serif;
+            color: #002754;
+            line-height: 1.25em;
+        }
+        h1 {
+            clear: both;
+            font-size: 2.1em;
+            font-weight: normal;
+            margin: .2em 0 .4em 0;
+        }
+        h2 {
+            clear: both;
+            font-size: 1.8em;
+            font-weight: normal;
+            margin: .3em 0;
+        }
+        h3 {
+            font-size: 1.5em;
+            font-weight: normal;
+            margin: .6em 0 0 0;
+        }
+        h4 {
+            font-size: 1.3em;
+            font-weight: normal;
+            margin: 0 0 .2em 0;
+        }
+        h5 {
+            font-size: 1.3em;
+            font-weight: normal;
+            margin: 0 0 .24998em 0;
+        }
+        h6 {
+            font-size: 1.0em;
+            font-weight: normal;
+            margin: 0 0 .3333em 0;
+        }
+        #schedules {
+            padding: 2px;
+            margin: 24px 6px 0 0;
+        }
+        #schedules legend {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #002754;
+        }
+        #schedules table td {
+            width: 33%;
+            text-align: center;
+            background-color: #DDD;
+            padding: 4px;
+            border: 3px solid white;
+        }
+        #schedules p {
+            margin: 0;
+            padding: 4px;
+            font-size: .8em;
+        }
+    </style>
+</head>
+
+<body>
+    <div onClick="handleOnClick(event)">
+
+    </div>
+
+    <script>
+        function handleOnClick(event) {
+            event.preventDefault();
+            onLinkClick(event.target.innerText, event.target.href);
+        }
+    </script>
+</body>
+
+</html>

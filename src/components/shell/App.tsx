@@ -2,16 +2,17 @@ import * as React from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
+import Course from "../utils/Course";
 import { LoadCalendarJSON, LoadCoursesListJSON } from "../utils/Network";
 import { ICalendar } from "../utils/types/ServerTypes";
 
 import CourseView from './CourseView';
 import TitleBar from "./TitleBar";
 
-
 import './css/App.css';
+
 interface IAppState {
-  currentCourse: string;
+  currentCourse?: Course;
   
   /** The current list of calendars */
   calendarList?: ICalendar[];
@@ -24,12 +25,12 @@ interface IAppState {
 }
 
 class App extends React.Component<any, IAppState> {
-  
-  public state: IAppState = {
-    currentCourse: ""
-  };
 
-  public render() {    
+  public state: IAppState = {};
+
+  public render() {   
+    const { calendarUri, currentCourse } = this.state;
+
     return (
       <div className="App">
         <CssBaseline />
@@ -37,7 +38,10 @@ class App extends React.Component<any, IAppState> {
           courseList={this.state.courseList } 
           onCourseSearch={this.handleSearchCourse}
         />
-        <CourseView />
+        <CourseView 
+          calendarUri={calendarUri}
+          searchedCourse={currentCourse}
+          />
       </div>
     );
   }
@@ -59,8 +63,10 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
-  public handleSearchCourse = (newCourse: string) => {
-    if(newCourse !== this.state.currentCourse){
+  public handleSearchCourse = (newCourse: Course) => {
+    const { currentCourse } = this.state;
+
+    if(!currentCourse || !newCourse.equals(currentCourse)){
       this.setState( {currentCourse: newCourse} );
     }
   }

@@ -2,6 +2,8 @@ import * as React from 'react';
 
 import Button from '@material-ui/core/Button';
 import CloseIcon from '@material-ui/icons/Close';
+import Course from "../utils/Course";
+
 import ErrorIcon from '@material-ui/icons/Error';
 
 import IconButton from '@material-ui/core/IconButton';
@@ -20,7 +22,7 @@ const errorSlide: React.StatelessComponent = (props: any) => {
 
 interface ITitleBarProps {
     courseList?: string[];
-    onCourseSearch: (course: string) => any;
+    onCourseSearch: (course: Course) => any;
 }
 
 interface ITitleBarState {
@@ -53,7 +55,8 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                             error={invalidCourse}
                             onChange={this.handleUserInput}
                             onKeyPress={this.handleKeyPress}
-                            disabled={!courseList}          
+                            disabled={!courseList}
+                            spellCheck={false}          
                         />
                     </div>
                     <Button 
@@ -127,7 +130,8 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                 const { courseList } = this.props;
                 
                 if (courseList && courseList.indexOf(id) > -1) {
-                    this.props.onCourseSearch(id);
+                    const course = new Course(fieldOfStudy, courseNum);                    
+                    this.props.onCourseSearch(course);
                     return;
                 }
             }

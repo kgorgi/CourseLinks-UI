@@ -50,13 +50,6 @@
     margin: 0 1em;
 }
 
-.TitleBar-buttonsWrapper {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    flex-grow: 1;
-}
-
 
 .TitleBar-errorMessage {
     display: flex;

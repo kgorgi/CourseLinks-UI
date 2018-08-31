@@ -1,0 +1,24 @@
+.SelectedCourseInfo-iframe-wrapper {
+    display: flex;
+    height: 100%;
+}
+.SelectedCourseInfo-iframe {
+    flex: 1;
+    border: none;
+    height: 100%;
+}
+
+.SelectedCourseInfo-resizingWrapper {
+    margin: 8px;
+}
+
+.SelectedCourseInfo-resizingMessage {
+    clear: both;
+    font-size: 2.1em;
+    font-weight: normal;
+    margin: .2em 0 .4em 0;
+    text-decoration: none;
+    font-family: 'OpenSansRegular', 'Arial', sans-serif;
+    color: #002754;
+    line-height: 1.25em;
+}
