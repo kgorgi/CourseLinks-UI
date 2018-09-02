@@ -2,6 +2,7 @@ import * as React from "react";
 import SplitPane from "react-split-pane";
 
 import Course, { CourseRegex }  from "../utils/Course";
+import { GetPanelSize, SetPanelSize } from "../utils/LocalStorage";
 import GraphContainer from "./graph/GraphContainer";
 import GraphLegend from "./graph/GraphLegend";
 import SelectedCourseInfo from "./SelectedCourseInfo";
@@ -15,23 +16,25 @@ interface ICourseViewProps {
 interface ICourseViewState {
     selectedCourse?: Course;
     isResizing: boolean;
+    panelSize: number;
 }
 
 class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> { 
     public state: ICourseViewState = {
         isResizing: false,
+        panelSize: 0,
     }
     
     public render() {
         const { searchedCourse } = this.props;
-        const { selectedCourse, isResizing } = this.state;
+        const { selectedCourse, isResizing, panelSize } = this.state;
 
         return (
             <div className="CourseView">
                 <SplitPane
                     split="vertical"
                     minSize={0.2 * window.innerWidth}
-                    defaultSize={0.3 * window.innerWidth}
+                    size={panelSize}
                     maxSize={0.5 * window.innerWidth}
                     primary="second"
                     style={{
@@ -40,6 +43,7 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
                     className="CourseView-splitPane"
                     onDragStarted={this.handleOnDragStart}
                     onDragFinished={this.handleOnDragEnd}
+                    onChange={this.handleOnPanelResize}
                 >
                     <div className="CourseView-Graph">
                         <GraphLegend />
@@ -58,6 +62,17 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
                 </SplitPane>
             </div>
         );
+    }
+
+    public componentDidMount(){
+        let panelSize = GetPanelSize();
+
+        if(panelSize === undefined) {
+            panelSize = 0.3 * window.innerWidth;
+            SetPanelSize(panelSize);
+        } 
+        
+        this.setState( { panelSize } );
     }
 
     public componentDidUpdate(prevProps: ICourseViewProps, prevState: ICourseViewState){
@@ -88,6 +103,11 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
 
     private handleOnDragEnd = () => {
         this.setState( {isResizing: false} );
+    }
+
+    private handleOnPanelResize = (newSize: number) => {
+        SetPanelSize(newSize);
+        this.setState( { panelSize : newSize });
     }
 }
 

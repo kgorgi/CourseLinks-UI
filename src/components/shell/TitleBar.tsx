@@ -22,12 +22,15 @@ const errorSlide: React.StatelessComponent = (props: any) => {
 interface ITitleBarProps {
     courseList?: string[];
     onCourseSearch: (course: Course) => any;
+    calendarText?: string;
+    onOpenCalendarModal: () => void;
 }
 
 interface ITitleBarState {
     errorMessageVisible: boolean;
     invalidCourse: boolean;
-    searchText: string;   
+    searchText: string;
+    showCalendarModal: boolean;   
 }
 
 class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
@@ -36,10 +39,11 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
         errorMessageVisible: false,
         invalidCourse: false,
         searchText: "",
+        showCalendarModal: false,
     };
 
     public render() {
-        const { courseList } = this.props;
+        const { courseList, onOpenCalendarModal, calendarText } = this.props;
         const { invalidCourse, searchText, errorMessageVisible } = this.state;
         
         return (
@@ -68,8 +72,11 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                     </Button>
                 </div>
                 <div className="TitleBar-calendar">
-                    <div className="TitleBar-calendarName"> Spring 2018 </div>                    
-                    <Button variant="contained">
+                    <div className="TitleBar-calendarName"> {calendarText} </div>                    
+                    <Button 
+                        variant="contained"
+                        onClick={onOpenCalendarModal}
+                    >
                         Switch Calendar
                     </Button>
                 </div>
@@ -106,7 +113,7 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
 
     private handleUserInput = (event: React.ChangeEvent<HTMLInputElement>) => {
         const searchText = event.target.value;
-        this.setState( { invalidCourse: false, searchText} );  
+        this.setState( { invalidCourse: false, searchText, errorMessageVisible: false} );  
     }
 
     private handleKeyPress = (event: React.KeyboardEvent) => {
