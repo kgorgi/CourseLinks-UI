@@ -1,0 +1,18 @@
+.CalendarSelector-container {
+    text-align: center;
+}
+
+.CalendarSelector-text {
+    color: rgba(0, 0, 0, 0.54);
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    line-height: 1.5em;
+    margin: 1em;
+}
+
+.CalendarSelector-dropdow {
+    width: 8em;
+}
+

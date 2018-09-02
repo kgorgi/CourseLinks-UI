@@ -53,12 +53,21 @@ class GraphContainer extends React.Component<IGraphContainerProps, IGraphContain
     }
 
     public async componentDidUpdate(prevProps: IGraphContainerProps, prevState: IGraphContainerState) {
-        if (this.props.searchedCourse !== prevProps.searchedCourse && this.props.searchedCourse){
-            this.constructNewGraph(this.props.searchedCourse);
-            this.clearSelectNode();
+        
+        // Searched Course Change
+        const { searchedCourse } = this.props;
+        if ( prevProps.searchedCourse !== searchedCourse){        
+            if(searchedCourse){
+                 // New Course: Generate Graph
+                this.constructNewGraph(searchedCourse);
+                this.clearSelectNode();
+            } else {
+                // Calendar Change: Clear Graph
+                this.setState( {graphData: undefined, events: {} });
+            }        
         }
         
-        // 
+        // Course Selected in Graph or Resizing
         const { selectedCourse, isResizing } = this.props;
         if( (prevProps.selectedCourse !== selectedCourse || // New Course Selected
              prevProps.isResizing === true && isResizing === false) // Finished Resizing Panels
