@@ -48,8 +48,8 @@
     font-family: bold;
     color:  #e0e0e0;
     margin: 0 1em;
+    text-align: right;
 }
-
 
 .TitleBar-errorMessage {
     display: flex;

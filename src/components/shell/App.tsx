@@ -15,7 +15,6 @@ import TitleBar from "./TitleBar";
 
 import './css/App.css';
 
-
 interface IAppState {
   searchedCourse?: Course;
   
