@@ -5,6 +5,8 @@ import Select from "@material-ui/core/Select";
 
 import { ICalendar } from "../../utils/ServerTypes";
 
+import { AreCalendarsEqual } from "../../utils/ServerTypesHelperFunctions";
+
 import "./css/CalendarSelector.css";
 
 interface ICalendarSelectorProps {
@@ -19,8 +21,15 @@ class CalendarSelector extends React.Component<ICalendarSelectorProps> {
         const { selectedCalendar, calendars } = this.props;
 
         let index = 0;
+
         if (calendars){
-            index = calendars.indexOf(selectedCalendar);
+            for(const calendar of calendars){          
+                if(AreCalendarsEqual(calendar, selectedCalendar)){
+                    break;
+                } 
+
+                index += 1;
+            }
         }    
 
         return (
@@ -39,7 +48,7 @@ class CalendarSelector extends React.Component<ICalendarSelectorProps> {
     }
 
     private generateAvailableCalendars = () => {
-        const { calendars, selectedCalendar } = this.props;
+        const { calendars } = this.props;
 
         if (!calendars) {
             return null;
@@ -48,7 +57,6 @@ class CalendarSelector extends React.Component<ICalendarSelectorProps> {
         return calendars.map((calendar, index) => (
             <MenuItem
               key={calendar.displayName}
-              selected={calendar === selectedCalendar}
               value={index}
             >
               {calendar.displayName}
