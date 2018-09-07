@@ -4,16 +4,18 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 
 
 import Course from "../utils/Course";
-import { GetCalendar, SetCalendar } from '../utils/LocalStorage';
+import LocalStorage from '../utils/LocalStorage';
 import Network from "../utils/Network";
 import { ICalendar } from "../utils/ServerTypes";
 
 import CalendarModal from './modals/CalendarModal';
+import HelpModal from "./modals/HelpModal";
 
 import CoursesView from './CoursesView';
 import TitleBar from "./TitleBar";
 
 import './css/App.css';
+import StartModal from './modals/StartModal';
 
 interface IAppState {
   searchedCourse?: Course;
@@ -28,12 +30,18 @@ interface IAppState {
   courseList?: string[];
 
   showCalendarModal: boolean;
+
+  showHelpModal: boolean;
+
+  showStartModal: boolean;
 }
 
 class App extends React.Component<any, IAppState> {
 
   public state: IAppState = {
-    showCalendarModal: false
+    showCalendarModal: false,
+    showHelpModal: false,
+    showStartModal: true,
   };
 
   public render() {   
@@ -41,17 +49,20 @@ class App extends React.Component<any, IAppState> {
       searchedCourse, 
       calendarList, 
       calendar, 
-      showCalendarModal 
+      showCalendarModal,
+      showHelpModal,
+      showStartModal
     } = this.state;
 
     return (
       <div className="App">
         <CssBaseline />
         <TitleBar 
-          courseList={this.state.courseList } 
+          courseList={this.state.courseList }
+          calendarText={calendar ? calendar.displayName : ""} 
           onCourseSearch={this.handleSearchCourse}
           onOpenCalendarModal={this.handleCalendarModalOpen}
-          calendarText={calendar ? calendar.displayName : ""}
+          onOpenHelpModal={this.handleHelpModalOpen}   
         />
         <CoursesView searchedCourse={searchedCourse} />
         <CalendarModal 
@@ -59,7 +70,16 @@ class App extends React.Component<any, IAppState> {
           currentCalendar={calendar}
           isOpen={showCalendarModal}
           onClose={this.handleCalendarModalClose}
-          />
+        />
+        <HelpModal 
+          isOpen={showHelpModal}
+          onClose={this.handleHelpModalClose}
+          onShowStartModal={this.handleStartModalOpen}  
+        />
+        <StartModal 
+          isOpen={showStartModal}
+          onClose={this.handleStartModalClose}
+        />
       </div>
     );
   }
@@ -67,14 +87,18 @@ class App extends React.Component<any, IAppState> {
   public async componentDidMount() {
     const calendarList = await Network.LoadCalendarJSON();
 
-    let calendar = GetCalendar();
+    let calendar = LocalStorage.GetCalendar();
 
     if(calendar === undefined){
       calendar = calendarList[0];
-      SetCalendar(calendar);
+      LocalStorage.SetCalendar(calendar);
     }
 
     this.setState({ calendarList, calendar });
+
+    // Show StartModal
+    const showStartModal = LocalStorage.GetShowStartModal();
+    this.setState({ showStartModal });
   }
 
   public async componentDidUpdate(prevProps: any, prevState: IAppState) {
@@ -101,17 +125,35 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
+  // Modal Functions
+
   private handleCalendarModalOpen = () => {
-    this.setState( { showCalendarModal: true});
+    this.setState( { showCalendarModal: true });
   }
 
   private handleCalendarModalClose = (newCalendar: ICalendar) => {
     if(newCalendar){
       this.setState( {calendar: newCalendar} );
-      SetCalendar(newCalendar);
+      LocalStorage.SetCalendar(newCalendar);
     }
     
     this.setState( { showCalendarModal: false});
+  }
+
+  private handleHelpModalOpen = () => {
+    this.setState( { showHelpModal: true });
+  }
+
+  private handleHelpModalClose = () => {
+    this.setState( { showHelpModal: false });
+  }
+
+  private handleStartModalClose = () => {
+    this.setState( { showStartModal: false });
+  }
+
+  private handleStartModalOpen = () => {
+    this.setState( { showStartModal: true });
   }
 }
 

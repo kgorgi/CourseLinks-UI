@@ -10,15 +10,26 @@ import { AreCalendarsEqual } from "../../utils/ServerTypesHelperFunctions";
 import "./css/CalendarSelector.css";
 
 interface ICalendarSelectorProps {
-    calendars: ICalendar[];
-    selectedCalendar: ICalendar;
-    onCalendarSelected: (newCalendar: ICalendar) => void;
+    currentCalendar?: ICalendar;
+    calendars?: ICalendar[];
 }
 
-class CalendarSelector extends React.Component<ICalendarSelectorProps> {
+interface ICalendarSelectorState {
+    selectedCalendar?: ICalendar;
+}
+
+class CalendarSelector extends React.Component<ICalendarSelectorProps, ICalendarSelectorState> {
     
+    public state: ICalendarSelectorState = {}
+
     public render() {
-        const { selectedCalendar, calendars } = this.props;
+        const { calendars, currentCalendar } = this.props;
+        const { selectedCalendar } = this.state;
+
+        // Check if all values are present
+        if( !calendars || !selectedCalendar || !currentCalendar){
+            return null;
+        }
 
         let index = 0;
 
@@ -47,6 +58,25 @@ class CalendarSelector extends React.Component<ICalendarSelectorProps> {
         );
     }
 
+    public componentWillReceiveProps(nextProps: ICalendarSelectorProps) {
+        const { currentCalendar } = this.props;
+        if (nextProps.currentCalendar !== currentCalendar && nextProps.currentCalendar) {
+            this.setState({ selectedCalendar: nextProps.currentCalendar });
+        }
+    }
+
+    public getSelectedCalendar = () => {
+        return this.state.selectedCalendar;
+    }
+
+    private handleCalendarSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const { calendars } = this.props;
+        
+        if(calendars) {
+            this.setState( {selectedCalendar: calendars[event.target.value] });
+        }
+    }
+   
     private generateAvailableCalendars = () => {
         const { calendars } = this.props;
 
@@ -62,15 +92,7 @@ class CalendarSelector extends React.Component<ICalendarSelectorProps> {
               {calendar.displayName}
             </MenuItem>
         ));
-    }
-
-    private handleCalendarSelect = (event: React.ChangeEvent<HTMLSelectElement>) => {
-        const { onCalendarSelected, calendars } = this.props;
-        
-        if(calendars) {
-            onCalendarSelected(calendars[event.target.value]);
-        }
-    }
+    }  
 }
 
 export default CalendarSelector;

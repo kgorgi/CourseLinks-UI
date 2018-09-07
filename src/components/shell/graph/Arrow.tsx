@@ -20,7 +20,6 @@ interface IArrowProps {
     color?: string;
     arrowHeadFilled?: boolean;
     lineWidth?: number;
-    lineDashed?: boolean | string;
     style?: any;
 }
 
@@ -31,7 +30,6 @@ class Arrow extends React.PureComponent<IArrowProps> {
         arrowHeadFilled: true,
         color: '#231F20',
         length: 50,
-        lineDashed: false,
         lineWidth: 1,
     };
 
@@ -50,7 +48,7 @@ class Arrow extends React.PureComponent<IArrowProps> {
         const withDefaultProps = { ...Arrow.defaultProps, ...this.props }
         
         const { length, arrowHeadFilled, lineWidth, color, ...otherProps } = withDefaultProps;
-        let { angle, lineDashed } = withDefaultProps;
+        let { angle } = withDefaultProps;
 
         // By default, our sin math would let the angle rotate to
         // the left. Reverse the direction.
@@ -120,14 +118,6 @@ class Arrow extends React.PureComponent<IArrowProps> {
             stroke: color,
             strokeDasharray: "",
             strokeWidth: lineWidth,           
-        }
-
-        if (lineDashed) {
-            if (typeof lineDashed !== 'string') {
-                lineDashed = '11, 5';
-            };
-
-            lineStyle.strokeDasharray = lineDashed;
         }
 
         return (

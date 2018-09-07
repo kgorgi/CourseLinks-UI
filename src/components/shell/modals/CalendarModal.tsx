@@ -9,24 +9,24 @@ import { ICalendar } from "../../utils/ServerTypes";
 import CalendarSelector from "./CalendarSelector";
 import { ModalTransition } from "./ModalTransition";
 
-interface ICalendarModal {
+interface ICalendarModalProps {
     isOpen: boolean;
     currentCalendar?: ICalendar;
     calendars?: ICalendar[];
     onClose: (newCalendar?: ICalendar) => void;
 }
 
-interface ICalendarModalState {
-    selectedCalendar?: ICalendar;
-}
+class CalendarModal extends React.PureComponent<ICalendarModalProps> {
 
-class CalendarModal extends React.PureComponent<ICalendarModal, ICalendarModalState> {
-
-    public state: ICalendarModalState = {}
+    private selectorRef: React.RefObject<CalendarSelector>;
+    
+    constructor(props: ICalendarModalProps) {
+        super(props);
+        this.selectorRef = React.createRef();
+    }
 
     public render() {
-        const { isOpen, calendars } = this.props;
-        const { selectedCalendar } = this.state;
+        const { isOpen, calendars, currentCalendar } = this.props;
 
         return (
             <Dialog
@@ -36,16 +36,14 @@ class CalendarModal extends React.PureComponent<ICalendarModal, ICalendarModalSt
                 onClose={this.handleCloseModal}
             >
                 <DialogContent>
-                    {calendars && selectedCalendar &&
-                        <CalendarSelector 
-                            selectedCalendar={selectedCalendar}
-                            calendars={calendars}
-                            onCalendarSelected={this.handleCalendarSelected}
-                        />
-                    }   
+                    <CalendarSelector 
+                        currentCalendar={currentCalendar}
+                        calendars={calendars}
+                        ref={this.selectorRef}
+                    />
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={this.handleCloseModal}>
+                    <Button onClick={this.handleCloseModal} variant="contained">
                         Save
                     </Button>
                 </DialogActions>
@@ -53,22 +51,16 @@ class CalendarModal extends React.PureComponent<ICalendarModal, ICalendarModalSt
         );
     }
 
-    public componentWillReceiveProps(nextProps: ICalendarModal) {
-        const { currentCalendar } = this.props;
-        if (nextProps.currentCalendar !== currentCalendar && nextProps.currentCalendar) {
-            this.setState({ selectedCalendar: nextProps.currentCalendar });
-        }
-    }
-
-    private handleCalendarSelected = (newCalendar: ICalendar) => {
-        this.setState( {selectedCalendar: newCalendar });
-    }
-    
     private handleCloseModal = () => {
         const { currentCalendar, onClose } = this.props;
-        const { selectedCalendar } = this.state;
 
-        onClose(selectedCalendar !== currentCalendar ? selectedCalendar : undefined);
+        if(this.selectorRef.current){
+            const newCalendar = this.selectorRef.current.getSelectedCalendar();
+            onClose(newCalendar !== currentCalendar ? newCalendar : undefined);
+        } else {
+            onClose(undefined);
+        }
+        
     }
 }
 

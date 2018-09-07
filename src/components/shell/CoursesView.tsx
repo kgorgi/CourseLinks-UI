@@ -2,7 +2,7 @@ import * as React from "react";
 import SplitPane from "react-split-pane";
 
 import Course, { CourseRegex }  from "../utils/Course";
-import { GetPanelSize, SetPanelSize } from "../utils/LocalStorage";
+import LocalStorage from "../utils/LocalStorage";
 import GraphContainer from "./graph/GraphContainer";
 import GraphLegend from "./graph/GraphLegend";
 import SelectedCourseInfo from "./SelectedCourseInfo";
@@ -65,11 +65,11 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
     }
 
     public componentDidMount(){
-        let panelSize = GetPanelSize();
+        let panelSize = LocalStorage.GetPanelSize();
 
         if(panelSize === undefined) {
             panelSize = 0.3 * window.innerWidth;
-            SetPanelSize(panelSize);
+            LocalStorage.SetPanelSize(panelSize);
         } 
         
         this.setState( { panelSize } );
@@ -106,7 +106,7 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
     }
 
     private handleOnPanelResize = (newSize: number) => {
-        SetPanelSize(newSize);
+        LocalStorage.SetPanelSize(newSize);
         this.setState( { panelSize : newSize });
     }
 }
