@@ -24,6 +24,7 @@ interface ITitleBarProps {
     onCourseSearch: (course: Course) => any;
     calendarText?: string;
     onOpenCalendarModal: () => void;
+    onOpenHelpModal: () => void;
 }
 
 interface ITitleBarState {
@@ -43,7 +44,7 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
     };
 
     public render() {
-        const { courseList, onOpenCalendarModal, calendarText } = this.props;
+        const { courseList, onOpenCalendarModal, onOpenHelpModal, calendarText } = this.props;
         const { invalidCourse, searchText, errorMessageVisible } = this.state;
         
         return (
@@ -81,7 +82,10 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                     </Button>
                 </div>
                 
-                <Button variant="contained" >
+                <Button 
+                    variant="contained"
+                    onClick={onOpenHelpModal}
+                >
                     Help
                 </Button>
                 <Snackbar
