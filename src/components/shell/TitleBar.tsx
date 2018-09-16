@@ -67,13 +67,12 @@ class Titlebar extends React.Component<ITitleBarProps, ITitleBarState> {
                     <Button 
                         variant="contained"
                         onClick={this.handleUserSearch}
-                        disabled={!courseList}
                     >
                         Search
                     </Button>
                 </div>
                 <div className="TitleBar-calendar">
-                    <div className="TitleBar-calendarName"> {calendarText} </div>                    
+                    <div className="TitleBar-calendarName"> {calendarText ? calendarText : "Loading"} </div>                    
                     <Button 
                         variant="contained"
                         onClick={onOpenCalendarModal}

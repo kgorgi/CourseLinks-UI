@@ -41,7 +41,7 @@ class LocalStorage {
         const value =  window.localStorage.getItem(showStartModalKey);
     
         if (value != null){
-            return !!value;
+            return (value === "true");
         }
     
         return true;

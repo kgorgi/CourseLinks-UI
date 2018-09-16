@@ -11,14 +11,12 @@ import { ModalTransition } from "./ModalTransition";
 
 import { DialogContent, DialogContentText } from "@material-ui/core";
 
-const helpUrl = "https://goo.gl/forms/d2lcIC986RhyTwV63";
-
-interface IHelpModalProps {
+interface IWelcomeModalProps {
     isOpen: boolean;
-    onClose: () => void;
+    onClose: () => void; 
 }
 
-class HelpModal extends React.Component<IHelpModalProps> {
+class WelcomeModal extends React.PureComponent<IWelcomeModalProps> {
 
     public render() {
         const { isOpen, onClose } = this.props;
@@ -27,18 +25,22 @@ class HelpModal extends React.Component<IHelpModalProps> {
             <Dialog
                 open={isOpen}
                 TransitionComponent={ModalTransition}
-                keepMounted={true}
+                keepMounted={false}
+                onClose={onClose}
             >
-                <DialogTitle>How to Use Course Links</DialogTitle>
+                <DialogTitle>Welcome to Course Links</DialogTitle>
                 <DialogContent>
-                    <HelpText isWelcomeModal={false}/>
-                    <DialogContentText style={{ textAlign: "center" }}><b>Supported Web Browsers:</b> Google Chrome and Firefox</DialogContentText>
+                    <DialogContentText style={{ textAlign: "center" }}>
+                        Course Links is a website where you can find all the possible dependencies for a UVic course. <br/> <br/>     
+                    </DialogContentText>
+                    <DialogContentText><b>To Use Course Links:</b> <br/></DialogContentText>
+                    <HelpText isWelcomeModal={true} />
+                    <DialogContentText style={{ textAlign: "center" }}>
+                        <b> Created by Kian Gorgichuk and Amandeep Singh.</b>
+                    </DialogContentText>
                 </DialogContent>
                 <DialogActions>
                     <LaunchStartModal />
-                    <Button onClick={this.handleContactUsClicked} variant="contained">
-                        Contact Us
-                    </Button>
                     <Button onClick={onClose} variant="contained">
                         Close
                     </Button>
@@ -46,10 +48,6 @@ class HelpModal extends React.Component<IHelpModalProps> {
             </ Dialog>
         );
     }
-
-    private handleContactUsClicked = () => {
-        window.open(helpUrl)
-    }
 }
 
-export default HelpModal;
+export default WelcomeModal;
