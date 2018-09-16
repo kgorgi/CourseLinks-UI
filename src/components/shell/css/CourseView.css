@@ -1,5 +1,6 @@
 .CourseView {
-    height: calc( 100% - 4em )
+    height: calc( 100% - 4em );
+    min-width: 75em;
 }
 
 .CourseView-Graph {
@@ -16,6 +17,7 @@
     -moz-background-clip: padding;
     -webkit-background-clip: padding;
     background-clip: padding-box;
+    min-width: 11px;
 }
 
 .Resizer:hover {

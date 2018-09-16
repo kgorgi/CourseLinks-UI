@@ -16,8 +16,8 @@ class HelpText extends React.Component<IHelpTextProps> {
             <React.Fragment>
                 <ul className="HelpText-list">
                     <li><DialogContentText>Enter a Course and click Search.</DialogContentText></li>
-                    <li><DialogContentText>Not all dependencies are required to take a course, </DialogContentText></li>
-                    <li><DialogContentText>Select a course in the graph to see course information in the right-side panel.</DialogContentText></li>
+                    <li><DialogContentText>Not all dependencies are required to take a course. </DialogContentText></li>
+                    <li><DialogContentText>Click a course in the graph to see course information in the right-side panel.</DialogContentText></li>
                     <li><DialogContentText>Click hyperlinks in the right-side panel to get more information about courses, timetables, faculty information, etc.</DialogContentText></li>
                     <li><DialogContentText>Note: The right-side panel is horizontally resizable. </DialogContentText></li>
                 </ul> <br /> <br />                       

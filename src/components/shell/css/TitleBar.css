@@ -49,6 +49,7 @@
     color:  #e0e0e0;
     margin: 0 1em;
     text-align: right;
+    min-width: 5em;
 }
 
 .TitleBar-errorMessage {

@@ -28,7 +28,7 @@ class WelcomeModal extends React.PureComponent<IWelcomeModalProps> {
                 keepMounted={false}
                 onClose={onClose}
             >
-                <DialogTitle>Welcome to Course Links</DialogTitle>
+                <DialogTitle>Welcome to Course Links Beta</DialogTitle>
                 <DialogContent>
                     <DialogContentText style={{ textAlign: "center" }}>
                         Course Links is a website where you can find all the possible dependencies for a UVic course. <br/> <br/>     
