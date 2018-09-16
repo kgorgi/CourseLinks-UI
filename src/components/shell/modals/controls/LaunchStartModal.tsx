@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import LocalStorage from "../../utils/LocalStorage";
+import LocalStorage from "../../../utils/LocalStorage";
 
 import Checkbox from "@material-ui/core/Checkbox";
 

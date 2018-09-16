@@ -5,8 +5,8 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import HelpText from "./HelpText";
-import LaunchStartModal from "./LaunchStartModal";
+import HelpText from "./controls/HelpText";
+import LaunchStartModal from "./controls/LaunchStartModal";
 import { ModalTransition } from "./ModalTransition";
 
 import { DialogContent, DialogContentText } from "@material-ui/core";

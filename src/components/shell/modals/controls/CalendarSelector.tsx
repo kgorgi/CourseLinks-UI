@@ -3,9 +3,9 @@ import * as React from "react";
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "@material-ui/core/Select";
 
-import { ICalendar } from "../../utils/ServerTypes";
+import { ICalendar } from "../../../utils/ServerTypes";
 
-import { AreCalendarsEqual } from "../../utils/ServerTypesHelperFunctions";
+import { AreCalendarsEqual } from "../../../utils/ServerTypesHelperFunctions";
 
 import "./css/CalendarSelector.css";
 

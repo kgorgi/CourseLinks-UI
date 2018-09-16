@@ -6,7 +6,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 
 import { ICalendar } from "../../utils/ServerTypes";
-import CalendarSelector from "./CalendarSelector";
+import CalendarSelector from "./controls/CalendarSelector";
 import { ModalTransition } from "./ModalTransition";
 
 interface ICalendarModalProps {
