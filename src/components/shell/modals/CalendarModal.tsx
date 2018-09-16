@@ -59,8 +59,7 @@ class CalendarModal extends React.PureComponent<ICalendarModalProps> {
             onClose(newCalendar !== currentCalendar ? newCalendar : undefined);
         } else {
             onClose(undefined);
-        }
-        
+        }    
     }
 }
 
