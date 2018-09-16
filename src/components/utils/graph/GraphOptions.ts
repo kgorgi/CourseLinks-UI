@@ -10,6 +10,7 @@ export const ShadowOptions = {
 };
 
 const options: Options = {
+    autoResize: true,
     edges: {
         shadow: ShadowOptions,
         smooth: {

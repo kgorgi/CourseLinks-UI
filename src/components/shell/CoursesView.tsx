@@ -20,6 +20,7 @@ interface ICourseViewState {
 }
 
 class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> { 
+    
     public state: ICourseViewState = {
         isResizing: false,
         panelSize: 0,
@@ -38,7 +39,7 @@ class CoursesView extends React.Component<ICourseViewProps, ICourseViewState> {
                     maxSize={0.5 * window.innerWidth}
                     primary="second"
                     style={{
-                        height: "inherit"
+                        height: "inherit",
                     }}
                     className="CourseView-splitPane"
                     onDragStarted={this.handleOnDragStart}
