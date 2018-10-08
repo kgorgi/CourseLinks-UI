@@ -1,7 +1,7 @@
 import Course from "./Course";
 import { ICalendars, ICourseList, IGraphInfo, } from "./ServerTypes";
 
-const baseOverride = true;
+const baseOverride = false;
 const overrideDataPath = "courselinks/data";
 const overrideServer = "http://localhost";
 
@@ -14,7 +14,7 @@ class Network {
     public static LoadCourseHTML = async (course: Course) => {
         const { fieldOfStudy, courseNum } = course;
         const html = await fetch(
-            Network.createUri(Network.calendarUri + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".html")
+            Network.createUri(Network.calendarUri + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".HTML")
         );
         const htmlText = await html.text();
         return htmlText;
@@ -23,20 +23,20 @@ class Network {
     public static LoadCourseJSON = async (course: Course) => {
         const { fieldOfStudy, courseNum } = course;
         const response = await fetch(
-            Network.createUri(Network.calendarUri + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".json")
+            Network.createUri(Network.calendarUri + "/RelationsInfo/" + fieldOfStudy, fieldOfStudy + courseNum + ".JSON")
         );
         const coursePackage = await JSON.parse(await response.text()) as IGraphInfo;
         return coursePackage;
     }
 
     public static LoadCoursesListJSON = async () => {
-        const response = await fetch(Network.createUri(Network.calendarUri + "/RelationsInfo", "courses.json"));
+        const response = await fetch(Network.createUri(Network.calendarUri + "/RelationsInfo", "Courses.JSON"));
         const coursesList = await JSON.parse(await response.text()) as ICourseList;
         return coursesList;
     }
 
     public static LoadCalendarJSON = async () => {
-        const response = await fetch(Network.createUri("", "calendars.json"));
+        const response = await fetch(Network.createUri("", "Calendars.json"));
         const dataObject = await JSON.parse(await response.text()) as ICalendars;
         return dataObject.available;
     }
