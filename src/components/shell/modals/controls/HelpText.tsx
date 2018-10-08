@@ -15,11 +15,11 @@ class HelpText extends React.Component<IHelpTextProps> {
         return (
             <React.Fragment>
                 <ul className="HelpText-list">
-                    <li><DialogContentText>Enter a Course and click Search.</DialogContentText></li>
-                    <li><DialogContentText>Not all dependencies are required to take a course. </DialogContentText></li>
+                    <li><DialogContentText>Enter a Course in the search bar and click Search.</DialogContentText></li>
                     <li><DialogContentText>Click a course in the graph to see course information in the right-side panel.</DialogContentText></li>
                     <li><DialogContentText>Click hyperlinks in the right-side panel to get more information about courses, timetables, faculty information, etc.</DialogContentText></li>
-                    <li><DialogContentText>Note: The right-side panel is horizontally resizable. </DialogContentText></li>
+                    <li><DialogContentText>The right-side panel is horizontally resizable. </DialogContentText></li>
+                    <li><DialogContentText>Note: Not all dependencies are required to take a course. </DialogContentText></li>npm
                 </ul> <br /> <br />                       
                 <DialogContentText className="HelpText-infoWarning">
                     <b>Always confirm with the official academic calendar, as this is BETA software. </b> 
