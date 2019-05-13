@@ -2,7 +2,6 @@ import * as React from 'react';
 
 import CssBaseline from '@material-ui/core/CssBaseline';
 
-
 import Course from "../utils/Course";
 import LocalStorage from '../utils/LocalStorage';
 import Network from "../utils/Network";
@@ -10,12 +9,16 @@ import { ICalendar } from "../utils/ServerTypes";
 
 import CalendarModal from './modals/CalendarModal';
 import HelpModal from "./modals/HelpModal";
+import WelcomeModal from './modals/WelcomeModal';
 
 import CoursesView from './CoursesView';
+import { MinSizeOverlay } from './MinSizeOverlay';
 import TitleBar from "./TitleBar";
 
 import './css/App.css';
-import WelcomeModal from './modals/WelcomeModal';
+
+const minHeight = 500;
+const minWidth = 1315;
 
 interface IAppState {
   searchedCourse?: Course;
@@ -58,10 +61,12 @@ class App extends React.Component<any, IAppState> {
       showOverlay
     } = this.state;
 
-    const overlayClassname = "App-Overlay" + showOverlay ? ' App-Overlay-Hide' : ''
+    const overlayClassname = "App-Overlay-" + (showOverlay ? 'Show' : 'Hide')
     return (
       <div className="App">
-        <div className={overlayClassname}/>
+        <div className={overlayClassname}>
+          <MinSizeOverlay />
+        </div> 
         <CssBaseline />
         <TitleBar
           courseList={this.state.courseList}
@@ -130,7 +135,8 @@ class App extends React.Component<any, IAppState> {
   }
 
   private updateOverlay = async () => {
-    if(window.innerWidth < 500 || window.innerHeight < 500){
+    console.log('RESIZE')
+    if(window.innerWidth < minWidth || window.innerHeight < minHeight){
       this.setState({
         showOverlay: true
       })
