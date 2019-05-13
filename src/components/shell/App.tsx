@@ -34,6 +34,8 @@ interface IAppState {
   showHelpModal: boolean;
 
   showStartModal: boolean;
+
+  showOverlay: boolean;
 }
 
 class App extends React.Component<any, IAppState> {
@@ -41,7 +43,8 @@ class App extends React.Component<any, IAppState> {
   public state: IAppState = {
     showCalendarModal: false,
     showHelpModal: false,
-    showStartModal: false,
+    showOverlay: false,
+    showStartModal: false
   };
 
   public render() {
@@ -51,11 +54,14 @@ class App extends React.Component<any, IAppState> {
       calendar,
       showCalendarModal,
       showHelpModal,
-      showStartModal
+      showStartModal,
+      showOverlay
     } = this.state;
 
+    const overlayClassname = "App-Overlay" + showOverlay ? ' App-Overlay-Hide' : ''
     return (
       <div className="App">
+        <div className={overlayClassname}/>
         <CssBaseline />
         <TitleBar
           courseList={this.state.courseList}
@@ -98,6 +104,9 @@ class App extends React.Component<any, IAppState> {
     // Show StartModal
     const showStartModal = LocalStorage.GetShowStartModal();
     this.setState({ showStartModal });
+
+    this.updateOverlay()
+    window.addEventListener("resize", this.updateOverlay)
   }
 
   public async componentDidUpdate(prevProps: any, prevState: IAppState) {
@@ -116,6 +125,23 @@ class App extends React.Component<any, IAppState> {
     }
   }
 
+  public componentWillUnmount() {
+    window.removeEventListener("resize", this.updateOverlay)
+  }
+
+  private updateOverlay = async () => {
+    if(window.innerWidth < 500 || window.innerHeight < 500){
+      this.setState({
+        showOverlay: true
+      })
+    } else {
+      this.setState({
+        showOverlay: false
+      })
+    }
+  }
+
+
   private handleSearchCourse = (newCourse: Course) => {
     const { searchedCourse } = this.state;
 
@@ -125,7 +151,6 @@ class App extends React.Component<any, IAppState> {
   }
 
   // Modal Functions
-
   private handleCalendarModalOpen = () => {
     this.setState({ showCalendarModal: true });
   }
