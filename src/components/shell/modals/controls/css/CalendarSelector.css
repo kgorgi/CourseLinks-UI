@@ -12,7 +12,8 @@
     margin: 1em;
 }
 
-.CalendarSelector-dropdown {
-    width: 8em;
+.CalendarSelector-dropdown {   
+    text-align: left;
+    width: 10em;
 }
 
