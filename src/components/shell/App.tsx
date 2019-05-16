@@ -135,7 +135,6 @@ class App extends React.Component<any, IAppState> {
   }
 
   private updateOverlay = async () => {
-    console.log('RESIZE')
     if(window.innerWidth < minWidth || window.innerHeight < minHeight){
       this.setState({
         showOverlay: true
