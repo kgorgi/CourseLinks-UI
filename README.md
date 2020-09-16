@@ -13,11 +13,9 @@ Note: This repository does not contain web scraper that acquires and processes t
  
 
 ## Beta Website
-
 A beta version of the website is currently unavailable as the University of Victoria changed the format of their online academic calendar.  
 
 ## Web Scraper
-
 The corresponding web scraper used to gather data from the Univsersity of Victoria website is available here: [CourseLinks Web Scaper](https://github.com/kgorgi/CourseLinks-Web-Scraper).
 
 
