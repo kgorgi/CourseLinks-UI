@@ -12,8 +12,14 @@ Course Links is a website that displays dependencies for University of Victoria'
 Note: This repository does not contain web scraper that acquires and processes the information from the University of Victoria's online academic calendar. This repository is only for the front-end portion of Course Links.  
  
 
-## Website
-A _beta_ version of Course Links is available here: [kgorgi.github.io/CourseLinks-Beta](https://kgorgi.github.io/CourseLinks-Beta/)
+## Beta Website
+
+A beta version of the website is currently unavailable as the University of Victoria changed the format of their online academic calendar.  
+
+## Web Scraper
+
+The corresponding web scraper used to gather data from the Univsersity of Victoria website is available here: [CourseLinks Web Scaper](https://github.com/kgorgi/CourseLinks-Web-Scraper).
+
 
 ## Demos
 ![](demo_gifs/graph.gif?raw=true)
